@@ -4,12 +4,14 @@ import { View, Text, ScrollView, StyleSheet } from "react-native";
 import Header from "../components/Header";
 import Historico from "../components/Historico";
 
-export default function AdolescenteHistoricoScreen() {
+export default function AdolescenteHistoricoScreen( {route} ) {
+    const { dadosAnteriores } = route.params
+
     return (
         <ScrollView>
             <View style={styles.container}>
                 <Header direcionado='Adolescentes'/>
-                <Historico/>
+                <Historico dadosAnteriores={dadosAnteriores}/>
             </View> 
         </ScrollView>
     )

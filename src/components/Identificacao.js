@@ -79,7 +79,33 @@ export default function Identificacao() {
         textoFiltrado = textoFiltrado.match(/.{1,4}/g)?.join(' ') || textoFiltrado
         setSus(textoFiltrado)
     }
-    
+
+    const dados = {
+        data,
+        nome,
+        idade,
+        nascimento,
+        sus,
+        endereco,
+        informante,
+        bairro,
+        cep,
+        cidadeUf,
+        mae,
+        nascimentoMae,
+        profissaoMae,
+        pai,
+        nascimentoPai,
+        profissaoPai,
+        estadoCivilSelecionado,
+        idadeSeparacao,
+        guardaSelecionada,
+        padrastoMadrasta,
+        motivo,
+        guardiao,
+        guardiaoLegalSelecionado
+    };
+
     return (
             <View style={styles.container}>
                 <View>
@@ -247,7 +273,7 @@ export default function Identificacao() {
                 </View>}
             </View>
             : null}
-            <Button title='Próximo' onPress={() => navigation.navigate('Sintomas - Adolescente') }/>
+            <Button title='Próximo' onPress={() => navigation.navigate('Sintomas - Adolescente', {dados}) }/>
             </View>
     )
 }

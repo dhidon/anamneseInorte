@@ -11,7 +11,7 @@ import Habilidades from "./Habilidades";
 import DesenvolvimentoSocial from "./DesenvolvimentoSocial";
 import HabilidadesMotoras from "./HabilidadesMotoras";
 
-export default function Historico() {
+export default function Historico( {dadosAnteriores} ) {
     const navigation = useNavigation()
 
     return (

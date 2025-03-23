@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import MultiplaEscolha from "./MultiplaEscolha";
 
-export default function Sintomas() {
+export default function Sintomas( {dadosAnteriores} ) {
     const navigation = useNavigation()
 
     const [motivo, setMotivo] = useState('')
@@ -31,6 +31,16 @@ export default function Sintomas() {
         {value: 15, label: 'doença ou enfermidade neurológica'}
     ]
 
+    const handleNext = () => {
+        const novosDados = {
+            motivo,
+            profissionais,
+            convive,
+            condicoesSelecionadas
+        };
+        navigation.navigate('Histórico - Adolescente', { dadosAnteriores: { ...dadosAnteriores, ...novosDados } });
+    };
+    
     return (
         <View style={styles.container}>
             <Text style={{fontWeight: 'bold'}}>2. Qual o principal motivo do paciente estar realizando esta avaliação?</Text>
@@ -57,7 +67,7 @@ export default function Sintomas() {
                 callback={setCondicoesSelecionadas}
                 lista={condicoes}
             />
-            <Button title='Próxima' onPress={() => navigation.navigate('Histórico - Adolescente')}/>
+            <Button title='Próxima' onPress={() => handleNext()}/>
         </View>
     )
 }
