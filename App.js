@@ -9,6 +9,7 @@ import AdolescenteIdentificacao from './src/screens/AdolescenteIdentificacaoScre
 import AdolescenteSintomas from './src/screens/AdolescenteSintomasScreen';
 import AdolescenteHistoricoScreen from './src/screens/AdolescenteHistoricoScreen';
 import Profissionais from './src/screens/ProfissionaisResponsaveisScreen';
+import LoginScreen from './src/screens/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Anamnese - Criança" component={Anamnese} />
         <Stack.Screen name="Identificação - Adolescente" component={AdolescenteIdentificacao} />

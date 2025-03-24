@@ -3,12 +3,16 @@ import { View, StyleSheet, Text, TextInput, Button } from "react-native";
 
 import Header from "../components/Header";
 
-export default function Profissionais() {
+export default function Profissionais( {route} ) {
+    const {dados} = route.params
+    
     const [anamenseRealizada, setAnamneseRealizada] = useState('')
     const [tecnico, setTecnico] = useState('')
 
+    console.log(dados)
+    
     const enviar = () => {
-
+        
     }
 
     return (

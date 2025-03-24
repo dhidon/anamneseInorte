@@ -69,7 +69,6 @@ export default function SonoEDesenvolvimento( {setDados} ) {
         setDados(dados)
     }, [dados])
 
-    console.log(dados.comportamentos)
     return (
         <View style={styles.container}>
             <Text>SONO</Text>

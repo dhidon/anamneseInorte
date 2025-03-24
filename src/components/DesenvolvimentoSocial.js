@@ -1,16 +1,18 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 import Seletor from "./Seletor";
 import MultiplaEscolha from "./MultiplaEscolha";
 
-export default function DesenvolvimentoSocial() {
-    const [caracteristicasSociaisSelecionadas, setCaracteristicasSociaisSelecionadas] = useState([])
-    const [atividadesFavoritas, setAtividadesFavoritas] = useState('')
-    const [comportamentosSelecionados, setComportamentosSelecionados] = useState([])
-    const [probLimiteSelecionado, setProbLimiteSelecionado] = useState([])
-    const [estrategiasUsadas, setEstrategiasUsadas] = useState('')
-    const [independenciaAtivSelecionado, setIndependenciaAtivSelecionado] = useState([])
+export default function DesenvolvimentoSocial( {setDados}) {
+    const [dados, setDadosLocal] = useState({
+        caracteristicasSociaisSelecionadas: [],
+        atividadesFavoritas: '',
+        comportamentosSelecionados: [],
+        probLimiteSelecionado: '',
+        estrategiasUsadas: '',
+        independenciaAtivSelecionado: []
+    })
 
     const simOuNao = [
         {value: 'sim', label: 'Sim'},
@@ -69,44 +71,49 @@ export default function DesenvolvimentoSocial() {
         {label: 'Fica balançando o corpo', value: 'balancaCorpo'}
     ]
 
+    useEffect(()=>{
+        setDados(dados)
+    }, [dados])
     return (
         <View>
             <Text>DESENVOLVIMENTO SOCIAL</Text>
             <MultiplaEscolha
                 titulo='Quais destas características sociais seu filho apresenta?'
                 lista={caracteristicasSociais}
-                grupo={caracteristicasSociaisSelecionadas}
-                callback={setCaracteristicasSociaisSelecionadas}
+                grupo={dados}
+                callback={setDadosLocal}
+                chave='caracteristicasSociaisSelecionadas'
             />
             <Text>Quais são as atividades favoritas do seu filho?</Text>
             <TextInput
                 style={styles.input}
-                value={atividadesFavoritas}
-                onChangeText={newText=>setAtividadesFavoritas(newText)}
+                value={dados.atividadesFavoritas}
+                onChangeText={newText=>setDadosLocal({...dados, atividadesFavoritas: newText})}
             />
             <Text style={{fontWeight: 'bold'}}>COMPORTAMENTO</Text>
             <MultiplaEscolha
                 titulo='Marque as opções que descrevam comportamentos apresentados pelo seu filho'
                 lista={comportamento}
-                callback={setComportamentosSelecionados}
-                grupo={comportamentosSelecionados}
+                callback={setDadosLocal}
+                grupo={dados}
+                chave='comportamentosSelecionados'
             />
             <Text>Seu filho tem problemas com limites?</Text>
             <Seletor
-                selecionado={probLimiteSelecionado}
-                aoMudar={setProbLimiteSelecionado}
+                selecionado={dados.probLimiteSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, probLimiteSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Quais as estratégias mais bem sucedidades que você usa com seu filho e que dá certo?</Text>
             <TextInput
                 style={styles.input}
-                value={estrategiasUsadas}
-                onChangeText={newText=>setEstrategiasUsadas(newText)}
+                value={dados.estrategiasUsadas}
+                onChangeText={newText=>setDadosLocal({...dados, estrategiasUsadas: newText})}
             />
             <Text>Consegue ser independente nas atividades de vida diárias?</Text>
             <Seletor
-                selecionado={independenciaAtivSelecionado}
-                aoMudar={setIndependenciaAtivSelecionado}
+                selecionado={dados.independenciaAtivSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, independenciaAtivSelecionado: value})}
                 lista={simOuNao}
             />
         </View>

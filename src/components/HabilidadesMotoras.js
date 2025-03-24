@@ -1,27 +1,29 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 import Seletor from "./Seletor";
 import MultiplaEscolha from "./MultiplaEscolha";
 
-export default function HabilidadesMotoras() {
-    const [habilidadesMotorasSelecionadas, setHabilidadesMotorasSelecionadas] = useState([])
-    const [contatoVisualSelecionado, setContatoVisualSelecionado] = useState([])
-    const [inclinaCabecaSelecionado, setInclinaCabecaSelecionado] = useState([])
-    const [aproximaObjetosSelecionado, setAproximaObjetosSelecionado] = useState([])
-    const [afastaObjetosSelecionado, setAfastaObjetosSelecionado] = useState([])
-    const [movimentoOlhosSelecionado, setMovimentoOlhosSelecionado] = useState([])
-    const [avOftalmoSelecionado, setAvOftalmoSelecionado] = useState([])
-    const [dorCabecaSelecionado, setDorCabecaSelecionado] = useState([])
-    const [difAuditivaSelecionado, setDifAuditivaSelecionado] = useState([])
-    const [realizouAvSelecionado, setRealizouAvSelecionado] = useState([])
-    const [frequentaEscolaSelecionado, setFrequentaEscolaSelecionado] = useState([])
-    const [nomeEscola, setNomeEscola] = useState('')
-    const [fazAeeSelecionado, setFazAeeSelecionado] = useState([])
-    const [serieEscola, setSerieEscola] = useState('')
-    const [turnoEscola, setTurnoEscola] = useState('')
-    const [difAprend, setDifAprend] = useState('')
-    const [comportEscola, setComportEscola] = useState('')
+export default function HabilidadesMotoras( {setDados} ) {
+    const [dados, setDadosLocal] = useState({
+        habilidadesMotorasSelecionadas: [],
+        contatoVisualSelecionado: [],
+        inclinaCabecaSelecionado: [],
+        aproximaObjetosSelecionado: [],
+        afastaObjetosSelecionado: [],
+        movimentoOlhosSelecionado: [],
+        avOftalmoSelecionado: [],
+        dorCabecaSelecionado: [],
+        difAuditivaSelecionado: [],
+        realizouAvSelecionado: [],
+        frequentaEscolaSelecionado: [],
+        nomeEscola: '',
+        fazAeeSelecionado: [],
+        serieEscola: '',
+        turnoEscola: '',
+        difAprend: '',
+        comportEscola: ''
+    })
 
     const habilidadesMotoras = [
         {label: 'Pouca coordenação motora fina', value: 'poucaCoordFina'},
@@ -36,117 +38,122 @@ export default function HabilidadesMotoras() {
         {label: 'Não', value: 'não'}
     ]
 
+    useEffect(()=>{
+        setDados(dados)
+    }, [dados])
+
     return (
         <View>
             <Text style={{fontWeight: 'bold'}}>HABILIDADES MOTORAS</Text>
             <MultiplaEscolha
                 titulo='Quais das características a seguir seu filho apresenta?'
-                grupo={habilidadesMotorasSelecionadas}
+                grupo={dados}
                 lista={habilidadesMotoras}
-                callback={setHabilidadesMotorasSelecionadas}
+                callback={setDadosLocal}
+                chave='habilidadesMotorasSelecionadas'
             />
             <Text style={{fontWeight: 'bold'}}>VISÃO</Text>
             <Text>Consegue manter contato visual por muito tempo?</Text>
             <Seletor
-                selecionado={contatoVisualSelecionado}
-                aoMudar={setContatoVisualSelecionado}
+                selecionado={dados.contatoVisualSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, contatoVisualSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Inclina a cabeça para olhar?</Text>
             <Seletor
-                selecionado={inclinaCabecaSelecionado}
-                aoMudar={setInclinaCabecaSelecionado}
+                selecionado={dados.inclinaCabecaSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, inclinaCabecaSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Aproxima objetos dos olhos?</Text>
             <Seletor
-                selecionado={aproximaObjetosSelecionado}
-                aoMudar={setAproximaObjetosSelecionado}
+                selecionado={dados.aproximaObjetosSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, aproximaObjetosSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Afasta os objetos?</Text>
             <Seletor
-                selecionado={afastaObjetosSelecionado}
-                aoMudar={setAfastaObjetosSelecionado}
+                selecionado={dados.afastaObjetosSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, afastaObjetosSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Movimento excessivo dos olhos?</Text>
             <Seletor
-                selecionado={movimentoOlhosSelecionado}
-                aoMudar={setMovimentoOlhosSelecionado}
+                selecionado={dados.movimentoOlhosSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, movimentoOlhosSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Já realizou avaliação oftalmológica?</Text>
             <Seletor
-                selecionado={avOftalmoSelecionado}
-                aoMudar={setAvOftalmoSelecionado}
+                selecionado={dados.avOftalmoSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, avOftalmoSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Reclama de dores de cabeça constantes, principalmente na região fronto-temporal?</Text>
             <Seletor
-                selecionado={dorCabecaSelecionado}
-                aoMudar={setDorCabecaSelecionado}
+                selecionado={dados.dorCabecaSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, dorCabecaSelecionado: value})}
                 lista={simOuNao}
             />
             <Text style={{fontWeight: 'bold'}}>AUDIÇÃO</Text>
             <Text>Apresenta dificuldade auditiva?</Text>
             <Seletor
-                selecionado={difAuditivaSelecionado}
-                aoMudar={setDifAuditivaSelecionado}
+                selecionado={dados.difAuditivaSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, difAuditivaSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Já realizou avaliação?</Text>
             <Seletor
-                selecionado={realizouAvSelecionado}
-                aoMudar={setRealizouAvSelecionado}
+                selecionado={dados.realizouAvSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, realizouAvSelecionado: value})}
                 lista={simOuNao}
             />
             <Text style={{fontWeight: 'bold'}}>DESEMPENHO ACADÊMICO</Text>
             <Text>Frequenta a escola?</Text>
             <Seletor
-                selecionado={frequentaEscolaSelecionado}
-                aoMudar={setFrequentaEscolaSelecionado}
+                selecionado={dados.frequentaEscolaSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, frequentaEscolaSelecionado: value})}
                 lista={simOuNao}
             />
-            {frequentaEscolaSelecionado === 'sim'
+            {dados.frequentaEscolaSelecionado === 'sim'
             ?<View>
                 <Text>Qual o nome da escola?</Text>
                 <TextInput
-                    value={nomeEscola}
-                    onChangeText={newText=>setNomeEscola(newText)}
+                    value={dados.nomeEscola}
+                    onChangeText={newText=>setDadosLocal({...dados, nomeEscola: newText})}
                     style={styles.input}
                 />
             </View>
             : null}
             <Text>Faz AEE?</Text>
             <Seletor
-                selecionado={fazAeeSelecionado}
-                aoMudar={setFazAeeSelecionado}
+                selecionado={dados.fazAeeSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, fazAeeSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Qual a série?</Text>
             <TextInput
                 style={styles.input}
-                value={serieEscola}
-                onChangeText={setSerieEscola}
+                value={dados.serieEscola}
+                onChangeText={newText=>setDadosLocal({...dados, serieEscola: newText})}
             />
             <Text>Qual o turno?</Text>
             <TextInput
                 style={styles.input}
-                value={turnoEscola}
-                onChangeText={setTurnoEscola}
+                value={dados.turnoEscola}
+                onChangeText={newText=>setDadosLocal({...dados, turnoEscola: newText})}
             />
             <Text>Apresenta dificuldade na aprendizagem?</Text>
             <TextInput
                 style={styles.input}
-                value={difAprend}
-                onChangeText={setDifAprend}
+                value={dados.difAprend}
+                onChangeText={newText=>setDadosLocal({...dados, difAprend: newText})}
             />
             <Text>Como é o comportamento no âmbito escolar?</Text>
             <TextInput
                 style={styles.input}
-                value={comportEscola}
-                onChangeText={setComportEscola}
+                value={dados.comportEscola}
+                onChangeText={newText=>setDadosLocal({...dados, comportEscola: newText})}
             />
         </View>
     )

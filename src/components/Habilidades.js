@@ -1,24 +1,26 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 import Seletor from "./Seletor";
 import MultiplaEscolha from "./MultiplaEscolha";
 
-export default function Habilidades(){
-    const [compreensaoFala, setCompreensaoFala] = useState([])
-    const [resolProb, setResolProb] = useState([])
-    const [mantemAtencao, setMantemAtencao] = useState([])
-    const [habOrganizacao, setHabOrganizao] = useState([])
-    const [recordEventos, setRecordEventos] = useState([])
-    const [recordFatos, setRecordFatos] = useState([])
-    const [aprendExperiencias, setAprendExperiencias] = useState([])
-    const [entendimentoConceitos, setEntendimentoConceitos] = useState([])
-    const [outrasDificuldadesSelecionadas, setOutrasDificuldadesSelecionadas] = useState([])
-    const [outraDifCogn, setOutraDifCogn] = useState('')
-    const [habilidadeEspecial, setHabilidadeEspecial] = useState('')
-    const [difCompreensaoLing, setDifCompreensaoLing] = useState([])
-    const [difComunicExpressiva, setDifComunicExpressiva] = useState([])
-    const [estreotipiasMovCorporais, setEstereotipiasMovCorporais] = useState([])
+export default function Habilidades( {setDados} ){
+    const [dados, setDadosLocal] = useState({
+        compreensaoFala: [],
+        resolProb: [],
+        mantemAtencao: [],
+        habOrganizacao: [],
+        recordEventos: [],
+        recordFatos: [],
+        aprendExperiencias: [],
+        entendimentoConceitos: [],
+        outrasDificuldadesSelecionadas: [],
+        outraDifCogn: '',
+        habilidadeEspecial: '',
+        difCompreensaoLing: [],
+        difComunicExpressiva: [],
+        estereotipiasMovCorporais: []
+    })
     
     const niveisHabilidade = [
         {label: 'Acima da média', value: 'acimaMedia'},
@@ -50,92 +52,97 @@ export default function Habilidades(){
         {value: 'não', label: 'Não'}
     ]
 
+    useEffect(()=>{
+        setDados(dados)
+    }, [dados])
+
     return (
         <View>
             <Text>HABILIDADES COGNITIVAS</Text>
             <Text>Classifique as habilidades do seu filho em relação a outros da mesma idade</Text>
             <Text>Compreensão da fala:</Text>
             <Seletor
-                selecionado={compreensaoFala}
-                aoMudar={setCompreensaoFala}
+                selecionado={dados.compreensaoFala}
+                aoMudar={value=>setDadosLocal({...dados, compreensaoFala: value})}
                 lista={niveisHabilidade}
             />
             <Text>Resolução de problemas:</Text>
             <Seletor
-                selecionado={resolProb}
-                aoMudar={setResolProb}
+                selecionado={dados.resolProb}
+                aoMudar={value=>setDadosLocal({...dados, resolProb: value})}
                 lista={niveisHabilidade}
             />
             <Text>Mamtém a atenção:</Text>
             <Seletor
-                selecionado={mantemAtencao}
-                aoMudar={setMantemAtencao}
+                selecionado={dados.mantemAtencao}
+                aoMudar={value=>setDadosLocal({...dados, mantemAtencao: value})}
                 lista={niveisHabilidade}
             />
             <Text>Habilidades de organização:</Text>
             <Seletor
-                selecionado={habOrganizacao}
-                aoMudar={setHabOrganizao}
+                selecionado={dados.habOrganizacao}
+                aoMudar={value=>setDadosLocal({...dados, habOrganizacao: value})}
                 lista={niveisHabilidade}
             />
             <Text>Recordação de eventos:</Text>
             <Seletor
-                selecionado={recordEventos}
-                aoMudar={setRecordEventos}
+                selecionado={dados.recordEventos}
+                aoMudar={value=>setDadosLocal({...dados, recordEventos: value})}
                 lista={niveisHabilidade}
             />
             <Text>Recordação de fatos:</Text>
             <Seletor
-                selecionado={recordFatos}
-                aoMudar={setRecordFatos}
+                selecionado={dados.recordFatos}
+                aoMudar={value=>setDadosLocal({...dados, recordFatos: value})}
                 lista={niveisHabilidade}
             />
             <Text>Aprendizagem a partir de experiências:</Text>
             <Seletor
-                selecionado={aprendExperiencias}
-                aoMudar={setAprendExperiencias}
+                selecionado={dados.aprendExperiencias}
+                aoMudar={value=>setDadosLocal({...dados, aprendExperiencias: value})}
                 lista={niveisHabilidade}
             />
             <Text>Entendimento de conceitos:</Text>
             <Seletor
-                selecionado={entendimentoConceitos}
-                aoMudar={setEntendimentoConceitos}
+                selecionado={dados.entendimentoConceitos}
+                aoMudar={value=>setDadosLocal({...dados, entendimentoConceitos: value})}
                 lista={niveisHabilidade}
             />
             <MultiplaEscolha
                 titulo='Outras possíveis dificuldades'
-                grupo={outrasDificuldadesSelecionadas}
+                grupo={dados}
                 lista={outrasDificuldades}
-                callback={setOutrasDificuldadesSelecionadas}
+                callback={setDadosLocal}
+                chave='outrasDificuldadesSelecionadas'
             />
             <Text>Descreva brevemente alguma outra dificuldade cognitiva que seu filho apresente:</Text>
             <TextInput
                 style={styles.input}
-                value={outraDifCogn}
-                onChangeText={newText=>setOutraDifCogn(newText)}
+                value={dados.outraDifCogn}
+                onChangeText={newText=>setDadosLocal({...dados, outraDifCogn: newText})}
             />
             <Text>Descreva brevemente alguma habilidade especial que seu filho apresente:</Text>
             <TextInput
                 style={styles.input}
-                value={habilidadeEspecial}
-                onChangeText={newText=>setHabilidadeEspecial(newText)}
+                value={dados.habilidadeEspecial}
+                onChangeText={newText=>setDadosLocal({...dados, habilidadeEspecial: newText})}
             />
             <Text>Dificuldade na compreensão da linguagem?</Text>
             <Seletor
-                selecionado={difCompreensaoLing}
-                aoMudar={setDifCompreensaoLing}
+                selecionado={dados.difCompreensaoLing}
+                aoMudar={value=>setDadosLocal({...dados, difCompreensaoLing: value})}
                 lista={simOuNao}
             />
             <Text>Dificuldade na comunicação expressiva?</Text>
             <Seletor
-                selecionado={difComunicExpressiva}
-                aoMudar={setDifComunicExpressiva}
+                selecionado={dados.difComunicExpressiva}
+                aoMudar={value=>setDadosLocal({...dados, difComunicExpressiva: value})}
                 lista={simOuNao}
             />
             <Text>Realiza estereotipias ou movimentos corporais?</Text>
             <Seletor
-                selecionado={estreotipiasMovCorporais}
-                aoMudar={setEstereotipiasMovCorporais}
+                selecionado={dados.estereotipiasMovCorporais}
+                aoMudar={value=>setDadosLocal({...dados, estereotipiasMovCorporais: value})}
                 lista={simOuNao}
             />
         </View>

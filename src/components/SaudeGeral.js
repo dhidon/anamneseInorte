@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
 import MultiplaEscolha from "./MultiplaEscolha";
 import Seletor from "./Seletor";
 
-export default function SaudeGeral() {
-    const [condicoesSelecionadas, setCondicoesSelecionadas] = useState([])
-    const [fatoresDifSelecionados,setFatoresDifSelecionados] = useState([])
-    const [usoMedicacaoSelecionado, setUsoMedicacaoSelecionado] = useState([])
-    const [qualMedicacao, setQualMedicacao] = useState('')
-    const [motivoMedicacao, setMotivoMedicacao] = useState('')
-    const [quemReceitouMedicacao, setQuemReceitouMedicacao] = useState('')
+export default function SaudeGeral( {setDados} ) {
+    const [dados, setDadosLocal] = useState({
+        condicoesSelecionadas:[],
+        fatoresDifSelecionados:[],
+        usoMedicacaoSelecionado: '',
+        qualMedicacao: '',
+        motivoMedicacao: '',
+        quemReceitouMedicacao: ''
+    })
 
     const condicoes = [
         { label: 'Oites', value: 'oites' },
@@ -73,47 +75,53 @@ export default function SaudeGeral() {
         {label: 'Sim', value: 'sim'},
         {label: 'Não', value: 'não'}
     ]
+
+    useEffect(()=>{
+        setDados(dados)
+    }, [dados])
     return (
         <View>
             <Text>SAÚDE GERAL</Text>
             <MultiplaEscolha
                 titulo='Marque as condições e doenças que seu filho já teve'
                 lista={condicoes}
-                grupo={condicoesSelecionadas}
-                callback={setCondicoesSelecionadas}
+                grupo={dados}
+                callback={setDadosLocal}
+                chave='condicoesSelecionadas'
             />
             <Text>ATUALMENTE</Text>
             <MultiplaEscolha
                 titulo='Quais fatores você acha que podem contribuir para as dificuldades do seu filho?'
                 lista={fatoresDif}
-                grupo={fatoresDifSelecionados}
-                callback={setFatoresDifSelecionados}
+                grupo={dados}
+                callback={setDadosLocal}
+                chave='fatoresDifSelecionados'
             />
             <Text>MEDICAÇÃO</Text>
             <Text>Faz uso de alguma medicação?</Text>
             <Seletor
-                selecionado={usoMedicacaoSelecionado}
+                selecionado={dados.usoMedicacaoSelecionado}
                 lista={simOuNao}
-                aoMudar={setUsoMedicacaoSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, usoMedicacaoSelecionado: value})}
             />
-            {usoMedicacaoSelecionado === 'sim'
+            {dados.usoMedicacaoSelecionado === 'sim'
             ?<View>
                 <TextInput
                     style={styles.input}
-                    value={qualMedicacao}
-                    onChangeText={newText=>setQualMedicacao(newText)}
+                    value={dados.qualMedicacao}
+                    onChangeText={newText=>setDadosLocal({...dados, qualMedicacao: newText})}
                     placeholder='Qual medicação?'
                 />
                 <TextInput
                     style={styles.input}
-                    value={motivoMedicacao}
-                    onChangeText={newText=>setMotivoMedicacao(newText)}
+                    value={dados.motivoMedicacao}
+                    onChangeText={newText=>setDadosLocal({...dados, motivoMedicacao: newText})}
                     placeholder="Qual o motivo do uso dessa medicação?"
                 />
                 <TextInput
                     style={styles.input}
-                    value={quemReceitouMedicacao}
-                    onChangeText={newText=>setQuemReceitouMedicacao(newText)}
+                    value={dados.quemReceitouMedicacao}
+                    onChangeText={newText=>setDadosLocal({...dados, quemReceitouMedicacao: newText})}
                     placeholder="Quem receitou esta medicação?"
                 />
             </View>
