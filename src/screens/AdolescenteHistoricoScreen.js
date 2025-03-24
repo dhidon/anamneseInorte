@@ -5,13 +5,13 @@ import Header from "../components/Header";
 import Historico from "../components/Historico";
 
 export default function AdolescenteHistoricoScreen( {route} ) {
-    const { dadosAnteriores } = route.params
+    const { dadosIdSintomas } = route.params
 
     return (
         <ScrollView>
             <View style={styles.container}>
                 <Header direcionado='Adolescentes'/>
-                <Historico dadosAnteriores={dadosAnteriores}/>
+                <Historico dadosAnteriores={dadosIdSintomas}/>
             </View> 
         </ScrollView>
     )

@@ -80,7 +80,7 @@ export default function Identificacao() {
         setSus(textoFiltrado)
     }
 
-    const dados = {
+    const dadosIdentificacao = {
         data,
         nome,
         idade,
@@ -273,7 +273,7 @@ export default function Identificacao() {
                 </View>}
             </View>
             : null}
-            <Button title='Próximo' onPress={() => navigation.navigate('Sintomas - Adolescente', {dados}) }/>
+            <Button title='Próximo' onPress={() => navigation.navigate('Sintomas - Adolescente', {dadosIdentificacao}) }/>
             </View>
     )
 }

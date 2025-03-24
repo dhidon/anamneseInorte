@@ -5,13 +5,13 @@ import Header from "../components/Header";
 import Sintomas from "../components/Sintomas";
 
 export default function AdolescenteSintomas( {route} ) {
-    const {dados} = route.params
+    const {dadosIdentificacao} = route.params
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{margin: 20, gap: 10}}>
                 <Header direcionado='Adolescentes'/>
-                <Sintomas dadosAnteriores={dados}/>
+                <Sintomas dadosAnteriores={dadosIdentificacao}/>
             </View>
         </ScrollView>
     )

@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import Seletor from "./Seletor"
 
-export default function GestacaoNascimento() {
-    const [gestacaoSelecionada, setGestacaoSelecionada] = useState([])
-    const [preNatalSelecionado, setPreNatalSelecionado] = useState([])
-    const [intercorrenciaSelecionada, setIntercorrenciaSelecionada] = useState(0)
-    const [qualIntercorrencia, setQualIntercorrencia] = useState('')
-    const [medicamentoSelecionado, setMedicamentoSelecionado] = useState([])
-    const [partoSelecionado, setPartoSelecionado] = useState([])
-    const [motivoParto, setMotivoParto] = useState('')
-    const [semanas, setSemanas] = useState('')
-    const [primeiro, setPrimeiro] = useState('')
-    const [quinto, setQuinto] = useState('')
-    const [peso, setPeso] = useState('')
-    const [comprimento, setComprimento] = useState('')
-    const [problemaSelecionado, setProblemaSelecionado] = useState([])
-    const [oxigenioSelecionado, setOxigenioSelecionado] = useState([])
-    const [cianoticoSelecionado, setCianoticoSelecionado] = useState([])
-    const [chorouSelecionado, setChorouSelecionado] = useState([])
-    const [ictericiaSelecionada, setIctericiaSelecionada] = useState([])
-    const [fototerapiaSelecionado, setFototerapiaSelecionado] = useState([])
-
+export default function GestacaoNascimento( { setDados } ) {
+    const [dados, setDadosLocal] = useState({
+        gestacaoSelecionada: [],
+        preNatalSelecionado: [],
+        intercorrenciaSelecionada: [],
+        qualIntercorrencia: '',
+        medicamentoSelecionado: [],
+        partoSelecionado: [],
+        motivoParto: [],
+        semanas: '',
+        primeiro: '',
+        quinto: '',
+        comprimento: '',
+        problemaSelecionado: [],
+        oxigenioSelecionado: [],
+        cianoticoSelecionado: [],
+        chorouSelecionado: [],
+        ictericiaSelecionada: [],
+        fototerapiaSelecionado: []
+    })
+    
     const simOuNao = [{label: 'Sim', value: 'sim'}, {label: 'Não', value: 'nao'}]
+
+    useEffect(()=>{
+        setDados(dados)
+    }, [dados])
   
     return (
         <View style={styles.container}>
@@ -30,115 +35,115 @@ export default function GestacaoNascimento() {
             <Text>GESTAÇÃO E NASCIMENTO</Text>
             <Text>A gestação foi planejada?</Text>
             <Seletor
-                selecionado={gestacaoSelecionada}
-                aoMudar={setGestacaoSelecionada}
+                selecionado={dados.gestacaoSelecionada}
+                aoMudar={value=>setDadosLocal({...dados, gestacaoSelecionada: value})}
                 lista={simOuNao}
             />
             <Text>Realizou pré-natal?</Text>
             <Seletor
-                selecionado={preNatalSelecionado}
-                aoMudar={setPreNatalSelecionado}
+                selecionado={dados.preNatalSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, preNatalSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Teve alguma intercorrência durante a gravidez?</Text>
             <Seletor
-                selecionado={intercorrenciaSelecionada}
-                aoMudar={setIntercorrenciaSelecionada}
+                selecionado={dados.intercorrenciaSelecionada}
+                aoMudar={value=>setDadosLocal({...dados, intercorrenciaSelecionada: value})}
                 lista={simOuNao}
             />
-            {intercorrenciaSelecionada === 'sim'
+            {dados.intercorrenciaSelecionada === 'sim'
             ?<View>
                 <Text>Qual?</Text>
                 <TextInput
                     style={styles.input}
-                    value={qualIntercorrencia}
-                    onChangeText={newText=>setQualIntercorrencia(newText)}
+                    value={dados.qualIntercorrencia}
+                    onChangeText={newText=>setDadosLocal({...dados, qualIntercorrencia: newText})}
                 />
             </View>
             : null}
             <Text>Fez uso de medicamentos durante a estação?</Text>
             <Seletor
-                selecionado={medicamentoSelecionado}
-                aoMudar={setMedicamentoSelecionado}
+                selecionado={dados.medicamentoSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, medicamentoSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Qual foi o tipo de parto e por que?</Text>
             <Seletor
-                selecionado={partoSelecionado}
-                aoMudar={setPartoSelecionado}
+                selecionado={dados.partoSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, partoSelecionado: value})}
                 lista={simOuNao}
             />
             <TextInput
                 style={styles.input}
-                value={motivoParto}
-                onChangeText={newText=>setMotivoParto(newText)}
+                value={dados.motivoParto}
+                onChangeText={newText=>setDadosLocal({...dados, motivoParto: newText})}
                 placeholder='Qual o motivo?'
             />
             <Text>A criança nasceu com quantas semanas?</Text>
             <TextInput
                 style={styles.input}
-                value={semanas}
-                onChangeText={newText=>setSemanas(newText)}
+                value={dados.semanas}
+                onChangeText={newText=>setDadosLocal({...dados, semanas: newText})}
             />
             <Text>APGAR:</Text>
             <TextInput
                 style={styles.input}
-                value={primeiro}
-                onChangeText={newText=>setPrimeiro(newText)}
+                value={dados.primeiro}
+                onChangeText={newText=>setDadosLocal({...dados, primeiro: newText})}
                 placeholder="1º minuto"
             />
             <TextInput
                 style={styles.input}
-                value={quinto}
-                onChangeText={newText=>setQuinto(newText)}
+                value={dados.quinto}
+                onChangeText={newText=>setDadosLocal({...dados, quinto: newText})}
                 placeholder="5º minuto"
             />
             <TextInput
                 style={styles.input}
-                value={peso}
-                onChangeText={newText=>setPeso(newText)}
+                value={dados.peso}
+                onChangeText={newText=>setDadosLocal({...dados, peso: newText})}
                 placeholder="Quantos quilos?"
             />
             <TextInput
                 style={styles.input}
-                value={comprimento}
-                onChangeText={newText=>setComprimento(newText)}
+                value={dados.comprimento}
+                onChangeText={newText=>setDadosLocal({...dados, comprimento: newText})}
                 placeholder="Qual o comprimento?"
             />
             <Text>Houve algum problema com o bebê logo que nasceu?</Text>
             <Seletor
-                selecionado={problemaSelecionado}
-                aoMudar={setProblemaSelecionado}
+                selecionado={dados.problemaSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, problemaSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>O bebê precisou de oxigênio?</Text>
             <Seletor
-                selecionado={oxigenioSelecionado}
-                aoMudar={setOxigenioSelecionado}
+                selecionado={dados.oxigenioSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, oxigenioSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>Nasceu cianótico?</Text>
             <Seletor
-                selecionado={cianoticoSelecionado}
-                aoMudar={setCianoticoSelecionado}
+                selecionado={dados.cianoticoSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, cianoticoSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>O bebê chorou logo?</Text>
             <Seletor
-                selecionado={chorouSelecionado}
-                aoMudar={setChorouSelecionado}
+                selecionado={dados.chorouSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, chorouSelecionado: value})}
                 lista={simOuNao}
             />
             <Text>O bebê apresentava sinais de icterícia?</Text>
             <Seletor
-                selecionado={ictericiaSelecionada}
-                aoMudar={setIctericiaSelecionada}
+                selecionado={dados.ictericiaSelecionada}
+                aoMudar={value=>setDadosLocal({...dados, ictericiaSelecionada: value})}
                 lista={simOuNao}
             />
             <Text>Precisou fazer fototerapia?</Text>
             <Seletor
-                selecionado={fototerapiaSelecionado}
-                aoMudar={setFototerapiaSelecionado}
+                selecionado={dados.fototerapiaSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, fototerapiaSelecionado: value})}
                 lista={simOuNao}
             />
         </View>

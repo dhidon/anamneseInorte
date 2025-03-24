@@ -1,14 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function MultiplaEscolha({lista, callback, grupo, titulo}) {
-    const alternarSelecao = (id, callback, grupo) => {
-        if (grupo.includes(id)) {
-            callback(grupo.filter(opcao => opcao !== id))
-        } else {
-            callback([...grupo, id])
-        }
+export default function MultiplaEscolha({lista, callback, grupo, titulo, chave}) {
+    const alternarSelecao = (id)=>{
+        const arrayAtual = grupo[chave] || [];
+        const novoGrupo = arrayAtual.includes(id)
+            ? arrayAtual.filter(opcao => opcao !== id)
+            : [...arrayAtual, id];
+        callback({...grupo, [chave]: novoGrupo});
     }
+    
 
     return (
         <View>
@@ -17,12 +18,12 @@ export default function MultiplaEscolha({lista, callback, grupo, titulo}) {
                 <TouchableOpacity
                     key={opcao.value}
                     style={styles.checkboxContainer}
-                    onPress={() => alternarSelecao(opcao.value, callback, grupo)}
+                    onPress={() => alternarSelecao(opcao.value)}
                 >
                     <View
                         style={[
                             styles.checkbox,
-                            grupo.includes(opcao.value) && styles.checkboxSelected,
+                            (grupo[chave] || []).includes(opcao.value) && styles.checkboxSelected,
                         ]}
                     />
                     <Text style={styles.label}>{opcao.label}</Text>

@@ -8,7 +8,7 @@ export default function Seletor({selecionado, aoMudar, lista}) {
             <Picker
                 style={{height: 50, width: '100%', borderRadius: 8, borderWidth: 1, justifyContent: 'center'}}
                 selectedValue={selecionado}
-                onValueChange={itemValue=>aoMudar(itemValue)}
+                onValueChange={aoMudar}
                 mode='dropdown'
             >
                 {lista.map((item, index) => {

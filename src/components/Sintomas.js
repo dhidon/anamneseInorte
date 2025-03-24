@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -7,10 +7,14 @@ import MultiplaEscolha from "./MultiplaEscolha";
 export default function Sintomas( {dadosAnteriores} ) {
     const navigation = useNavigation()
 
+    const [dados, setDados] = useState({
+        condicoesSelecionadas: []
+    })
+
     const [motivo, setMotivo] = useState('')
     const [profissionais, setProfissionais] = useState('')
     const [convive, setConvive] = useState('')
-    const [condicoesSelecionadas, setCondicoesSelecionadas] = useState([])
+    
 
     const condicoes = [
         {value: 0, label: 'autismo'},
@@ -32,15 +36,15 @@ export default function Sintomas( {dadosAnteriores} ) {
     ]
 
     const handleNext = () => {
-        const novosDados = {
+        const dadosSintomas = {
             motivo,
             profissionais,
             convive,
-            condicoesSelecionadas
+            condicoesSelecionadas: dados.condicoesSelecionadas
         };
-        navigation.navigate('Histórico - Adolescente', { dadosAnteriores: { ...dadosAnteriores, ...novosDados } });
+        navigation.navigate('Histórico - Adolescente', { dadosIdSintomas: { ...dadosAnteriores, ...dadosSintomas } });
     };
-    
+
     return (
         <View style={styles.container}>
             <Text style={{fontWeight: 'bold'}}>2. Qual o principal motivo do paciente estar realizando esta avaliação?</Text>
@@ -63,9 +67,10 @@ export default function Sintomas( {dadosAnteriores} ) {
             />
             <MultiplaEscolha
                 titulo='Marque as condições ou doenças que algum membro próximo da família (pais, irmãos, tias, tios, primos, avós, etc) já teve. Anote o grau de parentesco com a criança'
-                grupo={condicoesSelecionadas}
-                callback={setCondicoesSelecionadas}
+                grupo={dados}
+                callback={setDados}
                 lista={condicoes}
+                chave="condicoesSelecionadas"
             />
             <Button title='Próxima' onPress={() => handleNext()}/>
         </View>
