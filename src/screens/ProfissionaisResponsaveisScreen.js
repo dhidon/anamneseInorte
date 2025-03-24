@@ -6,13 +6,12 @@ import Header from "../components/Header";
 export default function Profissionais( {route} ) {
     const {dados} = route.params
     
-    const [anamenseRealizada, setAnamneseRealizada] = useState('')
+    const [anamneseRealizada, setAnamneseRealizada] = useState('')
     const [tecnico, setTecnico] = useState('')
 
-    console.log(dados)
-    
     const enviar = () => {
-        
+        const dadosTotais = {...dados, anamneseRealizada, tecnico}
+        console.log(dadosTotais)
     }
 
     return (
@@ -21,7 +20,7 @@ export default function Profissionais( {route} ) {
             <Text>Anamnese realizada com:</Text>
             <TextInput
                 style={styles.input}
-                value={anamenseRealizada}
+                value={anamneseRealizada}
                 onChangeText={newText=>setAnamneseRealizada(newText)}
             />
             <Text>Técnico:</Text>
