@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Header from '../components/Header'
-import Identificacao from "../components/Identificacao";
+import Header from '../../../components/Header'
+import Identificacao from '../../../components/anamnese/adolescentes/Identificacao';
 
 
 export default function AdolescenteIdentificacao() {

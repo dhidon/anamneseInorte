@@ -9,7 +9,7 @@ export default function Home() {
         <View style={styles.container}>
             <Text style={styles.title}>A qual grupo pertence o paciente que você está atendendo?</Text>
             <Button title='Adolescente' onPress={()=> navigation.navigate('Identificação - Adolescente')}/>
-            <Button title='Criança' onPress={()=> navigation.navigate('Anamnese - Criança')}/>
+            <Button title='Criança' onPress={()=> navigation.navigate('Identificação - Crianças')}/>
         </View>
     )
 }

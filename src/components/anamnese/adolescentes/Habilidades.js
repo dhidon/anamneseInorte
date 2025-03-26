@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
-import Seletor from "./Seletor";
-import MultiplaEscolha from "./MultiplaEscolha";
+import Seletor from "../../Seletor";
+import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function Habilidades( {setDados} ){
     const [dados, setDadosLocal] = useState({

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
-import Seletor from "./Seletor";
-import MultiplaEscolha from "./MultiplaEscolha";
+import Seletor from "../../Seletor";
+import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function SonoEDesenvolvimento( {setDados} ) {
     const [dados, setDadosLocal] = useState({

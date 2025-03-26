@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Header from "../components/Header";
-import GestacaoNascimento from "../components/GestacaoENascimento";
-import Alimentacao from "../components/Alimentacao";
-import SonoEDesenvolvimento from "../components/SonoEDesenvolvimento";
-import SaudeGeral from "../components/SaudeGeral";
-import Habilidades from "../components/Habilidades";
-import DesenvolvimentoSocial from "../components/DesenvolvimentoSocial";
-import HabilidadesMotoras from "../components/HabilidadesMotoras";
+import Header from "../../../components/Header";
+import GestacaoNascimento from "../../../components/anamnese/criancas/GestacaoENascimento";
+import Alimentacao from "../../../components/anamnese/criancas/Alimentacao";
+import SonoEDesenvolvimento from "../../../components/anamnese/criancas/SonoEDesenvolvimento";
+import SaudeGeral from "../../../components/anamnese/criancas/SaudeGeral";
+import Habilidades from "../../../components/anamnese/criancas/Habilidades";
+import DesenvolvimentoSocial from "../../../components/anamnese/criancas/DesenvolvimentoSocial";
+import HabilidadesMotoras from "../../../components/anamnese/criancas/HabilidadesMotoras";
 
-export default function AdolescenteHistoricoScreen( {route} ) {
+export default function CriancasHistoricoScreen( {route} ) {
     const { dados } = route.params
     const navigation = useNavigation()
 
@@ -40,7 +40,7 @@ export default function AdolescenteHistoricoScreen( {route} ) {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Header direcionado='Adolescentes'/>
+                <Header direcionado='Crianças'/>
                 <GestacaoNascimento setDados={setDadosGestacao}/>
                 <Alimentacao setDados={setDadosAlimentacao}/>
                 <SonoEDesenvolvimento setDados={setDadosSono}/>

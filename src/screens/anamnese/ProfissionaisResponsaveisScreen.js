@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { View, StyleSheet, Text, TextInput, Button, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
 export default function Profissionais( {route} ) {
     const {dadosTotais} = route.params
@@ -17,7 +17,13 @@ export default function Profissionais( {route} ) {
         tecnico
     }
 
-    const subirDados = async () => {
+    const subirDados = () => {
+        if (!anamneseRealizada || !tecnico) {
+            Alert.alert('Erro', 'Por favor, preencha todos os campos');
+            return;
+        }
+        
+        console.log('Dados a serem enviados:', dadosPaciente);
         Alert.alert(
             'Sucesso',
             'Dados enviados com sucesso!',

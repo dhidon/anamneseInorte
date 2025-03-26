@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
 
 
-import MultiplaEscolha from "./MultiplaEscolha";
+import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function Sintomas( {setDados} ) {
     const [dados, setDadosLocal] = useState({

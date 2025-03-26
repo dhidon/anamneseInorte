@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, TextInput, Button} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text, StyleSheet, TextInput} from "react-native";
 
-import Seletor from "./Seletor";
+import Seletor from "../../Seletor";
 
 
 export default function Identificacao( {setData} ) {

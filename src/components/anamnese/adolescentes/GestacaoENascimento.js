@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import Seletor from "./Seletor"
+import Seletor from "../../Seletor"
 
 export default function GestacaoNascimento( { setDados } ) {
     const [dados, setDadosLocal] = useState({
