@@ -14,23 +14,23 @@ export default function SonoEDesenvolvimento( {setDados} ) {
         problemaCrescimentoSelecionado: [],
         itensSignificantesSelecionados: [],
         comportamentos:[
-            {id: 1, label: 'Sorrir', idade:''},
-            {id: 2, label: 'Rolar', idade: ''},
-            {id: 3, label: 'Sentar sem apoio', idade:''},
-            {id: 4, label: 'Engatinhar', idade:''},
-            {id: 5, label: 'Andar sem apoio', idade:''},
-            {id: 6, label: 'Correr', idade:''},
-            {id: 7, label: 'Balbuciar', idade:''},
-            {id: 8, label: 'Sílabas', idade:''},
-            {id: 9, label: 'Palavras', idade:''},
-            {id: 10, label: 'Frases com 2 palavras', idade:''},
-            {id: 11, label: 'Amarrar os cadarços', idade:''},
-            {id: 12, label: 'Vestir-se sozinho', idade:''},
-            {id: 13, label: 'Comer sozinho', idade:''},
-            {id: 14, label: 'Controle diurno da urina', idade:''},
-            {id: 15, label: 'Controle noturno da urina', idade:''},
-            {id: 16, label: 'Controle de fezes', idade:''},
-            {id: 17, label: 'Andar de bicicleta', idade:''},
+            {value: 'sorrir', label: 'Sorrir', idade:''},
+            {value: 'rolar', label: 'Rolar', idade: ''},
+            {value: 'sentarSemApoio', label: 'Sentar sem apoio', idade:''},
+            {value: 'engatinhar', label: 'Engatinhar', idade:''},
+            {value: 'andarSemApoio', label: 'Andar sem apoio', idade:''},
+            {value: 'correr', label: 'Correr', idade:''},
+            {value: 'balbuciar', label: 'Balbuciar', idade:''},
+            {value: 'silabas', label: 'Sílabas', idade:''},
+            {value: 'palavras', label: 'Palavras', idade:''},
+            {value: 'frasesDuasPalavras', label: 'Frases com 2 palavras', idade:''},
+            {value: 'amarrarCadarcos', label: 'Amarrar os cadarços', idade:''},
+            {value: 'vestirSozinho', label: 'Vestir-se sozinho', idade:''},
+            {value: 'comerSozinho', label: 'Comer sozinho', idade:''},
+            {value: 'controleDiurnoUrina', label: 'Controle diurno da urina', idade:''},
+            {value: 'controleNoturnoUrina', label: 'Controle noturno da urina', idade:''},
+            {value: 'controleFezes', label: 'Controle de fezes', idade:''},
+            {value: 'andarBicicleta', label: 'Andar de bicicleta', idade:''},
         ]
     })
 
@@ -56,14 +56,14 @@ export default function SonoEDesenvolvimento( {setDados} ) {
     ]
 
     const atualizarComportamento = (id, newValue) => {
-        const comportamentosAtualizados = dados.comportamentos.map( opcao => {
-            if (opcao.id === id) {
-                return {...opcao, idade: newValue}
+        const comportamentosAtualizados = dados.comportamentos.map(opcao => {
+            if (opcao.value === id) {
+                return { ...opcao, idade: newValue };
             }
-            return opcao
-        })
-        setDadosLocal({...dados, comportamentos: comportamentosAtualizados})
-    }
+            return opcao;
+        });
+        setDadosLocal({ ...dados, comportamentos: comportamentosAtualizados });
+    };
 
     useEffect(()=>{
         setDados(dados)
@@ -116,15 +116,16 @@ export default function SonoEDesenvolvimento( {setDados} ) {
                 titulo='Alguns dos itens que seguem estiveram presentes (com grau de significância) durante a infância nos primeiros anos de vida?'
                 chave='itensSignificantesSelecionados'
             />
-            <Text>Indique a idade aproximada em que seu filho apresentou pela primeira vez os comportamentos a seguir:</Text>
-            <Text>Obs.: Assinale 'nunca' se ele nunca demonstrou o comportamento listado. Se não se lembra a idade exata, assinale como cedo, na média ou tarde em relação a outras crianças.</Text>
+            <Text style={{fontWeight: 'bold'}}>Indique a idade aproximada em que seu filho apresentou pela primeira vez os comportamentos a seguir:</Text>
+            <Text style={{fontSize: 13}}>Obs.: Assinale 'nunca' se ele nunca demonstrou o comportamento listado. Se não se lembra a idade exata, assinale como cedo, na média ou tarde em relação a outras crianças.</Text>
             {dados.comportamentos.map(opcao => (
-                <View>
+                <View key={opcao.value}>
                     <Text>{opcao.label}</Text>
                     <TextInput
                     style={styles.input}
                     value={opcao.idade}
-                    onChangeText={newText=>atualizarComportamento(opcao.id, newText)}
+                    onChangeText={newText=>atualizarComportamento(opcao.value, newText)}
+                    keyboardType="numeric"
                     />
                 </View>
             ))}

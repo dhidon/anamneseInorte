@@ -1,22 +1,41 @@
 import React, {useState} from "react";
-import { View, StyleSheet, Text, TextInput, Button } from "react-native";
+import { View, StyleSheet, Text, TextInput, Button, Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import Header from "../components/Header";
 
 export default function Profissionais( {route} ) {
-    const {dados} = route.params
+    const {dadosTotais} = route.params
+    const navigation = useNavigation()
     
     const [anamneseRealizada, setAnamneseRealizada] = useState('')
     const [tecnico, setTecnico] = useState('')
 
-    const enviar = () => {
-        const dadosTotais = {...dados, anamneseRealizada, tecnico}
-        console.log(dadosTotais)
+    const dadosPaciente = {
+        ...dadosTotais,
+        anamneseRealizada,
+        tecnico
     }
+
+    const subirDados = async () => {
+        Alert.alert(
+            'Sucesso',
+            'Dados enviados com sucesso!',
+            [
+                {
+                    text: 'Voltar para o início',
+                    onPress: () => navigation.navigate('Home'),
+                    style: 'cancel'
+                },
+            ],
+            { cancelable: true }
+        );
+    };
+    
 
     return (
         <View style={styles.container}>
-            <Header/>
+            <Header direcionado='Adolescentes'/>
             <Text>Anamnese realizada com:</Text>
             <TextInput
                 style={styles.input}
@@ -29,7 +48,7 @@ export default function Profissionais( {route} ) {
                 value={tecnico}
                 onChangeText={newText=>setTecnico(newText)}
             />
-            <Button title='Enviar dados do paciente' onPress={() => enviar(dados)}/>
+            <Button title='Enviar dados do paciente' onPress={() => subirDados()}/>
         </View>
     )
 }

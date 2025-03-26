@@ -1,37 +1,36 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, TextInput, Button} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Slider from "@react-native-community/slider";
 import Seletor from "./Seletor";
 
 
-export default function Identificacao() {
-    const navigation = useNavigation()
-
-    const [data, setData] = useState('')
-    const [nome, setNome] = useState('')
-    const [idade, setIdade] = useState()
-    const [nascimento, setNascimento] = useState('')
-    const [sus, setSus] = useState('')
-    const [endereco, setEndereco] = useState('')
-    const [informante, setInformante] = useState('')
-    const [bairro, setBairro] = useState('')
-    const [cep, setCep] = useState('')
-    const [cidadeUf, setCidadeUf] = useState('')
-    const [mae, setMae] = useState('')
-    const [nascimentoMae, setNascimentoMae] = useState('')
-    const [profissaoMae, setProfissaoMae] = useState('')
-    const [pai, setPai] = useState('')
-    const [nascimentoPai, setNascimentoPai] = useState('')
-    const [profissaoPai, setProfissaoPai] = useState('')
-    const [estadoCivilSelecionado, setEstadoCivilSelecionado] = useState(0)
-    const [idadeSeparacao, setIdadeSeparacao] = useState()
-    const [guardaSelecionada, setGuardaSelecionada] = useState(0)
-    const [padrastoMadrasta, setPadrastoMadrasta] = useState('')
-    const [motivo, setMotivo] = useState('')
-    const [guardiao, setGuardiao] = useState('')
-    const [guardiaoLegalSelecionado, setGuardiaoLegalSelecionado] = useState(0)
+export default function Identificacao( {setData} ) {
+    const [dados, setDadosLocal] = useState({
+        data: '',
+        nome: '',
+        idade: '',
+        nascimento: '',
+        sus: '',
+        endereco: '',
+        informante: '',
+        bairro: '',
+        cep: '',
+        cidadeUf: '',
+        mae: '',
+        nascimentoMae: '',
+        profissaoMae: '',
+        pai: '',
+        nascimentoPai: '',
+        profissaoPai: '',
+        estadoCivilSelecionado: 0,
+        idadeSeparacao: '',
+        guardaSelecionada: 0,
+        padrastoMadrasta: '',
+        motivo: '',
+        guardiao: '',
+        guardiaoLegalSelecionado: 0
+    })
 
     const estadoCivil = [
         { label: 'Casados', value: 'casados' },
@@ -60,7 +59,7 @@ export default function Identificacao() {
         } else if (textoFiltrado.length >= 3) {
             textoFiltrado = textoFiltrado.substring(0, 2) + '/' + textoFiltrado.substring(2, 4)
         }
-        callback(textoFiltrado)
+        callback({...dados, data: textoFiltrado})
     }
 
     const formatarCep = (texto) => {
@@ -71,40 +70,27 @@ export default function Identificacao() {
             textoFiltrado = `${textoFiltrado.substring(0,2)}.${textoFiltrado.substring(2)}`
         }
 
-        setCep(textoFiltrado)
+        setDadosLocal({...dados, cep: textoFiltrado})
     }
 
     const formatarSus = (texto) => {
         let textoFiltrado = texto.replace(/\D/g, '')
         textoFiltrado = textoFiltrado.match(/.{1,4}/g)?.join(' ') || textoFiltrado
-        setSus(textoFiltrado)
+        setDadosLocal({...dados, sus: textoFiltrado})
     }
 
-    const dadosIdentificacao = {
-        data,
-        nome,
-        idade,
-        nascimento,
-        sus,
-        endereco,
-        informante,
-        bairro,
-        cep,
-        cidadeUf,
-        mae,
-        nascimentoMae,
-        profissaoMae,
-        pai,
-        nascimentoPai,
-        profissaoPai,
-        estadoCivilSelecionado,
-        idadeSeparacao,
-        guardaSelecionada,
-        padrastoMadrasta,
-        motivo,
-        guardiao,
-        guardiaoLegalSelecionado
-    };
+    const generateIdade = () => {
+        const idade = new Date().getFullYear() - new Date(dados.nascimento).getFullYear()
+        setDadosLocal({...dados, idade: idade})
+    }
+    
+    useEffect(() => {
+        generateIdade()
+    }, [dados.nascimento])
+
+    useEffect(()=>{
+        setData(dados)
+    }, [dados])
 
     return (
             <View style={styles.container}>
@@ -112,42 +98,36 @@ export default function Identificacao() {
                     <Text>Data:</Text>
                     <TextInput 
                         style={{borderWidth: 1, borderRadius: 8, width: '40%', textAlign: 'center', height: 40}} 
-                        onChangeText={texto=>formatarData(texto, setData)}
+                        onChangeText={texto=>formatarData(texto, setDadosLocal)}
                         placeholder='DD/MM/AAAA'
-                        value={data}
+                        value={dados.data}
                     />
                 </View>
             <Text style={styles.titulo}>1. Dados de Identificação</Text>
             <Text>Nome completo:</Text>
             <TextInput
-                placeholder={nome}
+                placeholder={dados.nome}
                 style={styles.input}
-                onChangeText={(newText) => {setNome(newText)}}
+                onChangeText={newText => setDadosLocal({...dados, nome: newText})}
             />
             <Text>Data de nascimento:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='DD/MM/AAAA'
-                onChangeText={texto=>formatarData(texto, setNascimento)}
-                value={nascimento}
+                onChangeText={texto=>formatarData(texto, setDadosLocal)}
+                value={dados.nascimento}
             />
             
-                
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Text>Idade:</Text>
-                <Slider
-                    minimumValue={12}
-                    maximumValue={18}
-                    value={12}
-                    onValueChange={(newValue) => setIdade(newValue)}
-                    step={1}
-                    style={{width: '80%'}}
-                />
-                <Text style={{borderWidth: 1, borderRadius: 3, padding: 5}}>{idade}</Text>
+            
+            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 30}}>
+            <Text>Idade:</Text>
+            <Text style={{borderWidth: 1, borderRadius: 3, padding: 5}}>
+                {dados.idade ? dados.idade : '0'}
+            </Text>
             </View>
             <Text>Nº SUS:</Text>
             <TextInput
-                value={sus}
+                value={dados.sus}
                 style={styles.input}
                 placeholder='___ ___ ___ ___'
                 onChangeText={formatarSus}
@@ -157,123 +137,123 @@ export default function Identificacao() {
             <Text>Endereço:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={(newText) => setEndereco(newText)}
-                value={endereco}
+                onChangeText={(newText) => setDadosLocal({...dados, endereco: newText})}
+                value={dados.endereco}
             />
             <Text>Bairro:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={(newText) => setBairro(newText)}
-                value={bairro}
+                onChangeText={(newText) => setDadosLocal({...dados, bairro: newText})}
+                value={dados.bairro}
             />
             <Text>CEP:</Text>
             <TextInput
                 style={styles.input}
                 onChangeText={formatarCep}
-                value={cep}
+                value={dados.cep}
             />
             <Text>Cidade/UF:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={(newText) => setCidadeUf(newText)}
-                value={cidadeUf}
+                onChangeText={(newText) => setDadosLocal({...dados, cidadeUf: newText})}
+                value={dados.cidadeUf}
             />
             <Text>Informante:</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={(newText) => setInformante(newText)}
-                value={informante}
+                onChangeText={(newText) => setDadosLocal({...dados, informante: newText})}
+                value={dados.informante}
             />
             <Text>Dados da mãe:</Text>
             <TextInput
                 style={styles.input}
-                onChaneText={newText => setMae(newText)}
-                value={mae}
+                onChangeText={newText => setDadosLocal({...dados, mae: newText})}
+                value={dados.mae}
                 placeholder='Nome'
             />
             <TextInput
                 style={styles.input}
-                onChangeText={texto=>formatarData(texto, setNascimentoMae)}
-                value={nascimentoMae}
+                onChangeText={texto=>formatarData(texto, setDadosLocal)}
+                value={dados.nascimentoMae}
                 placeholder='Data de nascimento'
             />
             <TextInput
                 style={styles.input}
-                value={profissaoMae}
-                onChangeText={newText => setProfissaoMae(newText)}
+                value={dados.profissaoMae}
+                onChangeText={newText => setDadosLocal({...dados, profissaoMae: newText})}
                 placeholder='Profissão'
             />
             <Text>Dados do pai:</Text>
             <TextInput
                 style={styles.input}
-                onChaneText={newText => setPai(newText)}
-                value={pai}
+                onChaneText={newText => setDadosLocal({...dados, pai: newText})}
+                value={dados.pai}
                 placeholder='Nome'
             />
             <TextInput
                 style={styles.input}
-                onChangeText={texto=>formatarData(texto, setNascimentoPai)}
-                value={nascimentoPai}
+                onChangeText={texto=>formatarData(texto, setDadosLocal)}
+                value={dados.nascimentoPai}
                 placeholder='Data de nascimento'
             />
             <TextInput
                 style={styles.input}
-                value={profissaoPai}
-                onChangeText={newText => setProfissaoPai(newText)}
+                value={dados.profissaoPai}
+                onChangeText={newText => setDadosLocal({...dados, profissaoPai: newText})}
                 placeholder='Profissão'
             />
             <Text>Estado civil dos pais:</Text>
             <Seletor
-                selecionado={estadoCivilSelecionado}
-                aoMudar={setEstadoCivilSelecionado}
+                selecionado={dados.estadoCivilSelecionado}
+                aoMudar={value=>setDadosLocal({...dados, estadoCivilSelecionado: value})}
                 lista={estadoCivil}
             />
-            {estadoCivilSelecionado === 'separados' || estadoCivilSelecionado === 'divorciados'
+            {dados.estadoCivilSelecionado === 'separados' || dados.estadoCivilSelecionado === 'divorciados'
             ? <View style={{gap: 10}}>
                 <Text>Que idade a criança tinha quando os pais se separaram?</Text>
                 <TextInput
                     style={styles.input}
-                    value={idadeSeparacao}
-                    onChangeText={newText=>setIdadeSeparacao(newText)}
+                    value={dados.idadeSeparacao}
+                    onChangeText={newText=>setDadosLocal({...dados, idadeSeparacao: newText})}
                 />
                 <Text>Quem tem a guarda da criança?</Text>
                 <Seletor
-                    selecionado={guardaSelecionada}
-                    aoMudar={setGuardaSelecionada}
+                    selecionado={dados.guardaSelecionada}
+                    aoMudar={value=>setDadosLocal({...dados, guardaSelecionada: value})}
                     lista={guarda}
                 />
-                {guardaSelecionada !== 'outro'
+                {dados.guardaSelecionada !== 'outro'
                 ? <View style={{gap: 10}}>
                     <Text>Qual o nome do padrasto/madrasta?</Text>
                     <TextInput
                     style={styles.input}
-                    value={padrastoMadrasta}
-                    onchangeText={newText => setPadrastoMadrasta(newText)}
+                    value={dados.padrastoMadrasta}
+                    onchangeText={newText => setDadosLocal({...dados, padrastoMadrasta: newText})}
                     />
                 </View>
                 :<View style={{gap: 10}}>
                     <Text>Qual o motivo?</Text>
                     <TextInput
                         style={styles.input}
-                        value={motivo}
-                        onChangeText={newText=>setMotivo(newText)}
+                        value={dados.motivo}
+                        onChangeText={newText=>setDadosLocal({...dados, motivo: newText})}
                     />
                     <Text>Quem possui a guarda legal?</Text>
                     <Seletor
-                        selecionado={guardiaoLegalSelecionado}
-                        aoMudar={setGuardiaoLegalSelecionado}
+                        selecionado={dados.guardiaoLegalSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, guardiaoLegalSelecionado: value})}
                         lista={guardiaoLegal}
                     />
                     <TextInput
                         style={styles.input}
-                        value={guardiao}
-                        onChangeText={newText=>setGuardiao(newText)}
+                        value={dados.guardiao}
+                        onChangeText={newText=>setDadosLocal({...dados, guardiao: newText})}
                         placeholder='Nome'
                     />
                 </View>}
             </View>
-            : null}
-            <Button title='Próximo' onPress={() => navigation.navigate('Sintomas - Adolescente', {dadosIdentificacao}) }/>
+            : null
+            }
             </View>
     )
 }
