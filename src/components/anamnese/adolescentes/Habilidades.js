@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 
 import Seletor from "../../Seletor";
-import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function Habilidades( {setDados} ){
     const [dados, setDadosLocal] = useState({
@@ -19,7 +18,26 @@ export default function Habilidades( {setDados} ){
         habilidadeEspecial: '',
         difCompreensaoLing: [],
         difComunicExpressiva: [],
-        estereotipiasMovCorporais: []
+        estereotipiasMovCorporais: [],
+        outrasDificuldades: [
+            {id: 1, label: 'Dificuldades de articulação', value: 'não'},
+            {id: 2, label: 'Dificuldade no rítmo de entonação da fala', value: 'não'},
+            {id: 3, label: 'Repete a última palavra ou frase ouvida', value: 'não'}, 
+            {id: 4, label: 'Dificuldade para expressar desejos', value: 'não'},
+            {id: 5, label: 'Fala desorganizada', value: 'não'},
+            {id: 6, label: 'Fala agramatical', value: 'não'},
+            {id: 7, label: 'Fala infantilizada', value: 'não'},
+            {id: 8, label: 'Aprendizagem lenta', value: 'não'},
+            {id: 9, label: 'Esquece-se de fazer as coisas', value: 'não'},
+            {id: 10, label: 'Distrai-se facilmente', value: 'não'},
+            {id: 11, label: 'Esquece frequentemente instruções', value: 'não'},
+            {id: 12, label: 'Perde frequentemente pertences', value: 'não'},
+            {id: 13, label: 'Dificuldade em planejar tarefas', value: 'não'},
+            {id: 14, label: 'Não prevê consequências das ações', value: 'não'},
+            {id: 15, label: 'Pensamento lentificado', value: 'não'},
+            {id: 16, label: 'Dificuldade com dinheiro/matemática', value: 'não'},
+            {id: 17, label: 'Pouca noção temporal', value: 'não'}
+        ]
     })
     
     const niveisHabilidade = [
@@ -28,25 +46,7 @@ export default function Habilidades( {setDados} ){
         {label: 'Abaixo da média', value: 'abaixoMedia'},
         {label: 'Dificuldades severas', value: 'difSeveras'}
     ]
-    const outrasDificuldades = [
-        {label: 'Dificuldades de articulação', value: 'difArticulacao'},
-        {label: 'Dificuldade no rítmo de entonação da fala (Ex.: lento, rápido, baixo, alto...)', value: 'difRitmoTomFala'},
-        {label: 'Repete a última palavra ou frase imediatamente ouvida', value: 'repeticaoPalavras'},
-        {label: 'Dificuldade para encontrar palavras para expressar seus desejos', value: 'difPalavrasDesejos'},
-        {label: 'Fala desorganizada', value: 'falaDesorganizada'},
-        {label: 'Fala agramatical', value: 'falaAgramatical'},
-        {label: 'Fala infantilizada', value: 'falaInfantilizada'},
-        {label: 'Aprendizagem lenta', value: 'aprendizagemLenta'},
-        {label: 'Esquece-se de fazer as coisas', value: 'esqueceFazerCoisas'},
-        {label: 'Distrai-se facilmente', value: 'distraiFacilmente'},
-        {label: 'Esquece frequentemente das instruções', value: 'esqueceInstrucoes'},
-        {label: 'Perde frequentemente os seus pertences', value: 'perdePertences'},
-        {label: 'Dificuldade em planejar tarefas', value: 'difPlanTarefas'},
-        {label: 'Não prevê as consequências das ações', value: 'semConseqAcoes'},
-        {label: 'Pensamento lentificado', value: 'pensamentoLentificado'},
-        {label: 'Dificuldade em lidar com dinheiro ou com a matemática', value: 'difDinheiroMatematica'},
-        {label: 'Pouca noção temporal', value: 'poucaNocaoTemporal'}
-    ]
+
     const simOuNao = [
         {value: 'sim', label: 'Sim'},
         {value: 'não', label: 'Não'}
@@ -58,7 +58,7 @@ export default function Habilidades( {setDados} ){
 
     return (
         <View>
-            <Text>HABILIDADES COGNITIVAS</Text>
+            <Text style={{fontWeight: 'bold', marginBottom: 5}}>HABILIDADES COGNITIVAS</Text>
             <Text>Classifique as habilidades do seu filho em relação a outros da mesma idade</Text>
             <Text>Compreensão da fala:</Text>
             <Seletor
@@ -108,14 +108,22 @@ export default function Habilidades( {setDados} ){
                 aoMudar={value=>setDadosLocal({...dados, entendimentoConceitos: value})}
                 lista={niveisHabilidade}
             />
-            <MultiplaEscolha
-                titulo='Outras possíveis dificuldades'
-                grupo={dados}
-                lista={outrasDificuldades}
-                callback={setDadosLocal}
-                chave='outrasDificuldadesSelecionadas'
-            />
-            <Text>Descreva brevemente alguma outra dificuldade cognitiva que seu filho apresente:</Text>
+            <Text style={{fontWeight: 'bold', marginBottom: 5}}>Marque outras possíveis dificuldades</Text>
+            {dados.outrasDificuldades.map((item, index)=>{
+                return <TouchableOpacity key={index} onPress={()=>{
+                    const novasDificuldades = [...dados.outrasDificuldades]
+                    novasDificuldades[index].value = item.value === 'não' ? 'sim' : 'não'
+                    setDadosLocal({...dados, outrasDificuldades: novasDificuldades})
+                }}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text>{item.label}</Text>
+                        <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                    </View>
+                </TouchableOpacity>
+            })
+            }
+
+            <Text style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>Descreva brevemente alguma outra dificuldade cognitiva que seu filho apresente:</Text>
             <TextInput
                 style={styles.input}
                 value={dados.outraDifCogn}

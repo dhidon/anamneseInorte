@@ -52,14 +52,14 @@ export default function Identificacao( {setData} ) {
         { label: 'Instituição', value: 'instituição' }
     ]
 
-    const formatarData = (texto, callback) => {
+    const formatarData = (texto, callback, key) => {
         let textoFiltrado = texto.replace(/\D/g, '')
         if (textoFiltrado.length >= 5) {
             textoFiltrado = textoFiltrado.substring(0, 2) + '/' + textoFiltrado.substring(2, 4) + '/' + textoFiltrado.substring(4,8)
         } else if (textoFiltrado.length >= 3) {
             textoFiltrado = textoFiltrado.substring(0, 2) + '/' + textoFiltrado.substring(2, 4)
         }
-        callback({...dados, data: textoFiltrado})
+        callback({...dados, [key]: textoFiltrado})
     }
 
     const formatarCep = (texto) => {
@@ -80,8 +80,22 @@ export default function Identificacao( {setData} ) {
     }
 
     const generateIdade = () => {
-        const idade = new Date().getFullYear() - new Date(dados.nascimento).getFullYear()
-        setDadosLocal({...dados, idade: idade})
+        if (!dados.nascimento) return;
+
+        const partesData = dados.nascimento.split('/');
+        if (partesData.length !== 3) return;
+
+        const dataNascimento = new Date(`${partesData[2]}-${partesData[1]}-${partesData[0]}`);
+        const hoje = new Date();
+
+        let idade = hoje.getFullYear() - dataNascimento.getFullYear();
+        const mes = hoje.getMonth() - dataNascimento.getMonth();
+
+        if (mes < 0 || (mes === 0 && hoje.getDate() < dataNascimento.getDate())) {
+            idade -= 1;
+        }
+
+        setDadosLocal({ ...dados, idade });
     }
     
     useEffect(() => {
@@ -95,14 +109,14 @@ export default function Identificacao( {setData} ) {
     return (
             <View style={styles.container}>
                 <View>
-                    <Text>Data:</Text>
-                    <TextInput 
-                        style={{borderWidth: 1, borderRadius: 8, width: '40%', textAlign: 'center', height: 40}} 
-                        onChangeText={texto=>formatarData(texto, setDadosLocal)}
-                        placeholder='DD/MM/AAAA'
-                        value={dados.data}
-                    />
-                </View>
+                                    <Text>Data:</Text>
+                                    <TextInput 
+                                        style={{borderWidth: 1, borderRadius: 8, width: '40%', textAlign: 'center', height: 40}} 
+                                        onChangeText={texto=>formatarData(texto, setDadosLocal, 'data')}
+                                        placeholder='DD/MM/AAAA'
+                                        value={dados.data}
+                                    />
+                                </View>
             <Text style={styles.titulo}>1. Dados de Identificação</Text>
             <Text>Nome completo:</Text>
             <TextInput
@@ -111,12 +125,12 @@ export default function Identificacao( {setData} ) {
                 onChangeText={newText => setDadosLocal({...dados, nome: newText})}
             />
             <Text>Data de nascimento:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder='DD/MM/AAAA'
-                onChangeText={texto=>formatarData(texto, setDadosLocal)}
-                value={dados.nascimento}
-            />
+           <TextInput
+                           style={styles.input}
+                           placeholder='DD/MM/AAAA'
+                           onChangeText={texto=>formatarData(texto, setDadosLocal, 'nascimento')}
+                           value={dados.nascimento}
+                       />
             
             
             <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 30}}>
@@ -172,11 +186,11 @@ export default function Identificacao( {setData} ) {
                 placeholder='Nome'
             />
             <TextInput
-                style={styles.input}
-                onChangeText={texto=>formatarData(texto, setDadosLocal)}
-                value={dados.nascimentoMae}
-                placeholder='Data de nascimento'
-            />
+                            style={styles.input}
+                            onChangeText={texto=>formatarData(texto, setDadosLocal, 'nascimentoMae')}
+                            value={dados.nascimentoMae}
+                            placeholder='Data de nascimento'
+                        />
             <TextInput
                 style={styles.input}
                 value={dados.profissaoMae}
@@ -192,7 +206,7 @@ export default function Identificacao( {setData} ) {
             />
             <TextInput
                 style={styles.input}
-                onChangeText={texto=>formatarData(texto, setDadosLocal)}
+                onChangeText={texto=>formatarData(texto, setDadosLocal, 'nascimentoPai')}
                 value={dados.nascimentoPai}
                 placeholder='Data de nascimento'
             />

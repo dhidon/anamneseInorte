@@ -17,20 +17,20 @@ export default function Alimentacao( { setDados }) {
         qualDifAlimentar: '',
         consistenciasSelecionadas: [],
         probAlimentacaoSelecionado: [],
-        seletividadeAlimentar: ''
+        seletividadeAlimentar: '',
+        consistencias: [
+            {id: 0, label: 'Sólido', value: 'não'},
+            {id: 1, label: 'Líquido', value: 'não'},
+            {id: 2, label: 'Pastoso', value: 'não'}
+        ],
+        problemaAlimentacao: [
+            {id: 0, label: 'Alteração na mastigaçao', value: 'não'},
+            {id: 1, label: 'Pouco apetite', value: 'não'},
+            {id: 2, label: 'Voracidade', value: 'não'}
+        ]
     })
 
     const simOuNao = [{label: 'Sim', value: 'sim'}, {label: 'Não', value: 'não'}]
-    const consistencias = [
-        {value: 0, label: 'Sólido'},
-        {value: 1, label: 'Líquido'},
-        {value: 2, label: 'Pastoso'}
-    ]
-    const problemaAlimentacao = [
-        {value: 0, label: 'Alteração na mastigaçao'},
-        {value: 1, label: 'Pouco apetite'},
-        {value: 2, label: 'Voracidade'}
-    ]
 
     useEffect(()=>{
         setDados(dados)
@@ -102,20 +102,32 @@ export default function Alimentacao( { setDados }) {
             </View>
             :null}
             <Text>ATUALMENTE</Text>
-            <MultiplaEscolha
-                titulo='Aceita bem quais consistências de alimentos?'
-                lista={consistencias}
-                callback={setDadosLocal}
-                grupo={dados}
-                chave='consistenciasSelecionadas'
-            />
-            <MultiplaEscolha
-                titulo='Apresentou algum problema na alimentação?'
-                lista={problemaAlimentacao}
-                callback={setDadosLocal}
-                grupo={dados}
-                chave='probAlimentacaoSelecionado'
-            />
+            <Text style={{fontWeight: 'bold'}}>Aceita bem as consistencias de alimentos a seguir?</Text>
+                        {dados.consistencias.map((item, index) => {
+                            return <TouchableOpacity key={index} onPress={()=>{
+                                const newConsistencias = [...dados.consistencias]
+                                newConsistencias[index].value = item.value === 'não' ? 'sim' : 'não'
+                                setDadosLocal({...dados, consistencias: newConsistencias})
+                            }}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <Text>{item.label}</Text>
+                                    <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        })}
+                        <Text style={{fontWeight: 'bold'}}>Apresentou algum problema na alimentação?</Text>
+                        {dados.problemaAlimentacao.map((item, index)=> {
+                            return <TouchableOpacity key={index} onPress={()=> {
+                                const newProblemaAlimentacao = [...dados.problemaAlimentacao]
+                                newProblemaAlimentacao[index].value = item.value === 'não' ? 'sim' : 'não'
+                                setDadosLocal({...dados, problemaAlimentacao: newProblemaAlimentacao})
+                            }}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <Text>{item.label}</Text>
+                                    <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        })}
             <Text>Apresenta alguma seletividade em relação a comida? Quais?</Text>
             <TextInput
                 style={styles.input}

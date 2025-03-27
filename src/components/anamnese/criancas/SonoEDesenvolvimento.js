@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
 import Seletor from "../../Seletor";
-import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function SonoEDesenvolvimento( {setDados} ) {
     const [dados, setDadosLocal] = useState({
@@ -31,28 +30,28 @@ export default function SonoEDesenvolvimento( {setDados} ) {
             {value: 'controleNoturnoUrina', label: 'Controle noturno da urina', idade:''},
             {value: 'controleFezes', label: 'Controle de fezes', idade:''},
             {value: 'andarBicicleta', label: 'Andar de bicicleta', idade:''},
+        ],
+        itensSignificantes: [
+            {id: 1, label: 'Extremamente quieto ou inativo', value: 'não'},
+            {id: 2, label: 'Raramente quieto ou inativo', value: 'não'},
+            {id: 3, label: 'Excessivamente inquieto', value: 'não'},
+            {id: 4, label: 'Não gostava de colo ou afago', value: 'não'},
+            {id: 5, label: 'Pouco alerta', value: 'não'},
+            {id: 6, label: 'Dificuldade para se acalmar', value: 'não'},
+            {id: 7, label: 'Cólicas', value: 'não'},
+            {id: 8, label: 'Sono excessivo', value: 'não'},
+            {id: 9, label: 'Pouco Sono', value: 'não'},
+            {id: 10, label: 'Batidas na cabeça', value: 'não'},
+            {id: 11, label: 'Incômodo com som', value: 'não'},
+            {id: 12, label: 'Sem noção do perigo', value: 'não'},
+            {id: 13, label: 'Explorava tudo o tempo todo', value: 'não'},
+            {id: 14, label: 'Excessivo número de acidentes em comparação com outras crianças', value: 'não'}
         ]
     })
 
     const simOuNao = [
         {value: 'sim', label: 'Sim'},
         {value: 'não', label: 'Não'}
-    ]
-    const itensSignificantes = [
-        {value: 'extrQuietoInativo', label: 'Extremamente quieto ou inativo'},
-        {value: 'raraQuietoInativo', label: 'Raramente quieto ou inativo'},
-        {value: 'exceInquieto', label: 'Excessivamente inquieto'},
-        {value: 'coloAfago', label: 'Não gostava de colo ou afago'},
-        {value: 'poucoAlerta', label: 'Pouco alerta'},
-        {value: 'difAcalmar', label: 'Dificuldade para se acalmar'},
-        {value: 'colicas', label: 'Cólicas'},
-        {value: 'sonoExcessivo', label: 'Sono excessivo'},
-        {value: 'poucoSono', label: 'Pouco Sono'},
-        {value: 'batidasCabeca', label: 'Batidas na cabeça'},
-        {value: 'incomodoSom', label: 'Incômodo com som'},
-        {value: 'semNocaoP', label: 'Sem noção do perigo'},
-        {value: 'exploraTudo', label: 'Explorava tudo o tempo todo'},
-        {value: 'excessAcidentes', label: 'Excessivo número de acidentes em comparação com outras crianças'}
     ]
 
     const atualizarComportamento = (id, newValue) => {
@@ -109,13 +108,19 @@ export default function SonoEDesenvolvimento( {setDados} ) {
                 aoMudar={value=>setDadosLocal({...dados, problemaCrescimentoSelecionado: value})}
                 lista={simOuNao}
             />
-            <MultiplaEscolha
-                lista={itensSignificantes}
-                callback={setDadosLocal}
-                grupo={dados}
-                titulo='Alguns dos itens que seguem estiveram presentes (com grau de significância) durante a infância nos primeiros anos de vida?'
-                chave='itensSignificantesSelecionados'
-            />
+            <Text>Dentre os itens a seguir, pressione aqueles que estiveram presentes (com grau de significância) durante a infância nos primeiros anos de vida:</Text>
+            {dados.itensSignificantes.map((item, index)=> (
+                <TouchableOpacity key={index} onPress={()=>{
+                    const newItensSignificantes = [...dados.itensSignificantes]
+                    newItensSignificantes[index].value = item.value === 'não' ? 'sim' : 'não'
+                    setDadosLocal({...dados, itensSignificantes: newItensSignificantes})
+                }}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text>{item.label}</Text>
+                        <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                    </View>
+                </TouchableOpacity>
+            ))}
             <Text style={{fontWeight: 'bold'}}>Indique a idade aproximada em que seu filho apresentou pela primeira vez os comportamentos a seguir:</Text>
             <Text style={{fontSize: 13}}>Obs.: Assinale 'nunca' se ele nunca demonstrou o comportamento listado. Se não se lembra a idade exata, assinale como cedo, na média ou tarde em relação a outras crianças.</Text>
             {dados.comportamentos.map(opcao => (

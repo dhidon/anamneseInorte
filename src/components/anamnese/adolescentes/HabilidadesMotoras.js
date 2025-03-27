@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 
 import Seletor from "../../Seletor";
-import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function HabilidadesMotoras( {setDados} ) {
     const [dados, setDadosLocal] = useState({
@@ -22,17 +21,17 @@ export default function HabilidadesMotoras( {setDados} ) {
         serieEscola: '',
         turnoEscola: '',
         difAprend: '',
-        comportEscola: ''
+        comportEscola: '',
+        habilidadesMotoras: [
+            {id: 1, label: 'Pouca coordenação motora fina', value: 'não'},
+            {id: 2, label: 'Pouca coordenação motora ampla', value: 'não'},
+            {id: 3, label: 'Apresenta desequilíbrio (cai muito ou tropeça muito)', value: 'não'},
+            {id: 4, label: 'Dificuldade para correr', value: 'não'},
+            {id: 5, label: 'Problemas de postura', value: 'não'},
+            {id: 6, label: 'Demonstra hiperatividade', value: 'não'},
+        ]
     })
 
-    const habilidadesMotoras = [
-        {label: 'Pouca coordenação motora fina', value: 'poucaCoordFina'},
-        {label: 'Pouca coordenação motora ampla', value: 'poucaCoordAmpla'},
-        {label: 'Apresenta desequilíbrio (cai muito ou tropeça muito)', value: 'apresentaDesequilibrio'},
-        {label: 'Dificuldade para correr', value: 'difCorrer'},
-        {label: 'Problemas de postura', value: 'probPostura'},
-        {label: 'Demonstra hiperatividade', value: 'demonstraHiperatividade'},
-    ]
     const simOuNao = [
         {label: 'Sim', value: 'sim'},
         {label: 'Não', value: 'não'}
@@ -45,13 +44,19 @@ export default function HabilidadesMotoras( {setDados} ) {
     return (
         <View>
             <Text style={{fontWeight: 'bold'}}>HABILIDADES MOTORAS</Text>
-            <MultiplaEscolha
-                titulo='Quais das características a seguir seu filho apresenta?'
-                grupo={dados}
-                lista={habilidadesMotoras}
-                callback={setDadosLocal}
-                chave='habilidadesMotorasSelecionadas'
-            />
+            <Text>Assinale as caracteristicas a seguir que seu filho apresenta</Text>
+            {dados.habilidadesMotoras.map((item, index)=>{
+                return <TouchableOpacity key={index} onPress={()=> {
+                    const newHabilidades = [...dados.habilidadesMotoras]
+                    newHabilidades[index].value = item.value === 'não' ? 'sim' : 'não'
+                    setDadosLocal({...dados, habilidadesMotoras: newHabilidades})
+                }}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text>{item.label}</Text>
+                        <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                    </View>
+                </TouchableOpacity>
+            })}
             <Text style={{fontWeight: 'bold'}}>VISÃO</Text>
             <Text>Consegue manter contato visual por muito tempo?</Text>
             <Seletor

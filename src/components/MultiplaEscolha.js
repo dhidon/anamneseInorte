@@ -8,8 +8,14 @@ export default function MultiplaEscolha({lista, callback, grupo, titulo, chave})
             ? arrayAtual.filter(opcao => opcao !== id)
             : [...arrayAtual, id];
         callback({...grupo, [chave]: novoGrupo});
+        grupo.lista.map( op => {
+            if(op === 'não') {
+                callback({...grupo, [chave.op]: 'sim'})
+            } else {
+                callback({...grupo, [chave.op]: 'não'})
+            }
+        })
     }
-    
 
     return (
         <View>

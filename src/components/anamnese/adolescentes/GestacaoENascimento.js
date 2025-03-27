@@ -9,7 +9,10 @@ export default function GestacaoNascimento( { setDados } ) {
         intercorrenciaSelecionada: [],
         qualIntercorrencia: '',
         medicamentoSelecionado: [],
-        partoSelecionado: [],
+        partoSelecionado: [
+            {label: 'Vaginal', value: 'vaginal'},
+            {label: 'Cesárea', value: 'cesarea'}
+        ],
         motivoParto: [],
         semanas: '',
         primeiro: '',
@@ -71,7 +74,7 @@ export default function GestacaoNascimento( { setDados } ) {
             <Seletor
                 selecionado={dados.partoSelecionado}
                 aoMudar={value=>setDadosLocal({...dados, partoSelecionado: value})}
-                lista={simOuNao}
+                lista={dados.partoSelecionado}
             />
             <TextInput
                 style={styles.input}
