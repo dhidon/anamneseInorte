@@ -58,23 +58,23 @@ export default function Sintomas( {setDados} ) {
                     setDadosLocal({...dados, condicoes: newCondicoes});
                 }}>
                      <View>
-                                                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                                            <Text>{item.label}</Text>
-                                                            <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
-                                                        </View>
-                                                        {item.value === 'sim'
-                                                        ?<TextInput
-                                                            placeholder='Qual o parentesco?'
-                                                            style={styles.input}
-                                                            value={item.parentesco}
-                                                            onChangeText={newText=>setDadosLocal({
-                                                                ...dados,
-                                                                condicoes: dados.condicoes.map((item, i) => 
-                                                                i === index ? { ...item, parentesco: newText } : item)})}
-                                                        />
-                                                    :null
-                                                    }
-                                                    </View>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Text>{item.label}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                        </View>
+                        {item.value === 'sim'
+                        ?<TextInput
+                            placeholder='Qual o parentesco?'
+                                style={styles.input}
+                                value={item.parentesco}
+                                onChangeText={newText=>setDadosLocal({
+                                ...dados,
+                                condicoes: dados.condicoes.map((item, i) => 
+                                i === index ? { ...item, parentesco: newText } : item)})}
+                        />
+                        :null
+                        }
+                    </View>
                 </TouchableOpacity>
             )}
         </View>
