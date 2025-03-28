@@ -41,7 +41,7 @@ export default function Profissionais( {route} ) {
 
     return (
         <View style={styles.container}>
-            <Header direcionado='Adolescentes'/>
+            <Header/>
             <Text>Anamnese realizada com:</Text>
             <TextInput
                 style={styles.input}

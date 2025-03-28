@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
-import MultiplaEscolha from "../../MultiplaEscolha";
 import Seletor from "../../Seletor";
 
 export default function SaudeGeral( {setDados} ) {

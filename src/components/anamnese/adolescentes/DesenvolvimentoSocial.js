@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 
 import Seletor from "../../Seletor";
-import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function DesenvolvimentoSocial( {setDados}) {
     const [dados, setDadosLocal] = useState({

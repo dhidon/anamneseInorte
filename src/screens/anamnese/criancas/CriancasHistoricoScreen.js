@@ -6,10 +6,7 @@ import Header from "../../../components/Header";
 import GestacaoNascimento from "../../../components/anamnese/criancas/GestacaoENascimento";
 import Alimentacao from "../../../components/anamnese/criancas/Alimentacao";
 import SonoEDesenvolvimento from "../../../components/anamnese/criancas/SonoEDesenvolvimento";
-import SaudeGeral from "../../../components/anamnese/criancas/SaudeGeral";
-import Habilidades from "../../../components/anamnese/criancas/Habilidades";
-import DesenvolvimentoSocial from "../../../components/anamnese/criancas/DesenvolvimentoSocial";
-import HabilidadesMotoras from "../../../components/anamnese/criancas/HabilidadesMotoras";
+import Desempenho from "../../../components/anamnese/criancas/Desempenho";
 
 export default function CriancasHistoricoScreen( {route} ) {
     const { dados } = route.params
@@ -18,21 +15,15 @@ export default function CriancasHistoricoScreen( {route} ) {
     const [dadosGestacao, setDadosGestacao] = useState({})
     const [dadosAlimentacao, setDadosAlimentacao] = useState({})
     const [dadosSono, setDadosSono] = useState({})
-    const [dadosSaude, setDadosSaude] = useState({})
-    const [dadosHabilidades, setDadosHabilidades] = useState({})
-    const [dadosDesenvolvimento, setDadosDesenvolvimento] = useState({})
-    const [dadosMotoras, setDadosMotoras] = useState({})
+    const [dadosDesempenho, setDadosDesempenho] = useState({})
 
     const handleNext =() => {
         const dadosTotais = {
             ...dados,
             ...dadosGestacao,
             ...dadosAlimentacao,
-            ...dadosSono,
-            ...dadosSaude,
-            ...dadosHabilidades,
-            ...dadosDesenvolvimento, 
-            ...dadosMotoras
+            ...dadosSono, 
+            ...dadosDesempenho
         }
         navigation.navigate('Profissionais responsáveis', {dadosTotais})
     }
@@ -44,10 +35,7 @@ export default function CriancasHistoricoScreen( {route} ) {
                 <GestacaoNascimento setDados={setDadosGestacao}/>
                 <Alimentacao setDados={setDadosAlimentacao}/>
                 <SonoEDesenvolvimento setDados={setDadosSono}/>
-                <SaudeGeral setDados={setDadosSaude}/>
-                <Habilidades setDados={setDadosHabilidades}/>
-                <DesenvolvimentoSocial setDados={setDadosDesenvolvimento}/>
-                <HabilidadesMotoras setDados={setDadosMotoras}/>
+                <Desempenho setDados={setDadosDesempenho}/>
                 <Button title='Próximo' onPress={() => handleNext()}/>    
             </View> 
         </ScrollView>

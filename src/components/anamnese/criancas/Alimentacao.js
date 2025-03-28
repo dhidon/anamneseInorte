@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-nativ
 
 import Slider from "@react-native-community/slider";
 import Seletor from "../../Seletor";
-import MultiplaEscolha from "../../MultiplaEscolha";
 
 export default function Alimentacao( { setDados }) {
     const [dados, setDadosLocal] = useState({
