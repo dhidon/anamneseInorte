@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from "rea
 
 export default function Sintomas( {setDados} ) {
     const [dados, setDadosLocal] = useState({
+        motivo_cg_1: '',
+        profissionais_cg_2: '',
+        convive_cg_3: '',
         condicoes: [
             {id: 'autismo_cg_21', label: 'Autismo', value: 'não', parentesco: ''},
             {id: 'defictAtencao_cg_22', label: 'Déficit de atenção', value: 'não', parentesco: ''},
@@ -20,10 +23,7 @@ export default function Sintomas( {setDados} ) {
             {id: 'depressaoAnsiedade_cg_34', label: 'Depressão ou ansiedade', value: 'não', parentesco: ''},
             {id: 'abusoSexual_cg_35', label: 'Abuso sexual', value: 'não', parentesco: ''},
             {id: 'doencaNeurologica_cg_36', label: 'Doença ou enfermidade neurológica', value: 'não', parentesco: ''}
-        ],
-        motivo: '',
-        profissionais: '',
-        convive: ''
+        ]
     })
 
     useEffect(()=>{
@@ -32,7 +32,13 @@ export default function Sintomas( {setDados} ) {
 
     return (
         <View style={styles.container}>
-            <Text style={{fontWeight: 'bold'}}>2. Qual o principal motivo do paciente estar realizando esta avaliação?</Text>
+            <Button
+                title='log'
+                onPress={()=>{
+                    console.log(dados.condicoes[0])
+                }}/>
+            <Text style={{fontWeight: 'bold'}}>2. SINTOMAS</Text>
+            <Text>Qual o principal motivo do paciente estar realizando esta avaliação?</Text>
             <TextInput
                 style={styles.input}
                 value={dados.motivo}
