@@ -120,7 +120,7 @@ export default function SonoEDesenvolvimento( {setDados} ) {
             {id: 2, label: 'realiza movimentos das mãos perto do rosto', value: 'não'},
             {id: 3, label: 'realiza movimentos dos deos e mãos junto ao corpo', value: 'não'},
             {id: 4, label: 'balanço do corpo', value: 'não'},
-            {id: 5, label: 'realiza mocimento de braços (flapping)', value: 'não'},
+            {id: 5, label: 'realiza movimento de braços (flapping)', value: 'não'},
             {id: 6, label: 'apresenta reação exacerbada ao som, barulhos, ruídos', value: 'não'}
         ],
         medos: ''
