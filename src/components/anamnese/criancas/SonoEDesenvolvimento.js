@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, Dimensions } from "react-native";
 
 import Seletor from "../../Seletor";
 
@@ -143,44 +143,53 @@ export default function SonoEDesenvolvimento( {setDados} ) {
         {value: 'ocasionalmente', label: 'Ocasionalmente'}
     ]
 
+    const larguraTela = Dimensions.get('window').width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
+
     useEffect(()=>{
         setDados(dados)
     }, [dados])
 
     return (
-        <View style={styles.container}>
-            <Text>SONO</Text>
-            <Text>Como é o sono (tranquilo, agitado, acorda durante a noite, chora, insônia, pesadelo...)?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.formaSono}
-                onChangeText={newText=>setDadosLocal({...dados, formaSono: newText})}
-            />
-            <Text>Dorme sozinho?</Text>
-            <Seletor
-                selecionado={dados.dormeSozinhoSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, dormeSozinhoSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Cama compartilhada com:</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.quemCompartilhaCama}
-                onChangeText={newText=>setDadosLocal({...dados, quemCompartilhaCama: newText})}
-            />
-            <Text>Dorme que horas?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.horarioDormir}
-                onChangeText={newText=>setDadosLocal({...dados, horarioDormir: newText})}
-            />
-            <Text>Acorda que horas?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.horarioAcordar}
-                onChangeText={newText=>setDadosLocal({...dados, horarioAcordar: newText})}
-            />
-            <Text>DESENVOLVIMENTO NEUROPSICOMOTOR</Text>
+        <View>
+            <Text style={{fontWeight: 'bold'}}>SONO</Text>
+            <View style={ehDesktop?styles.desktopContainer : styles.mobileContainer}>
+                <View style={ehDesktop ? styles.column:null}>
+                    <Text>Como é o sono (tranquilo, agitado, acorda durante a noite, chora, insônia, pesadelo...)?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.formaSono}
+                        onChangeText={newText=>setDadosLocal({...dados, formaSono: newText})}
+                    />
+                    <Text>Dorme sozinho?</Text>
+                    <Seletor
+                        selecionado={dados.dormeSozinhoSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, dormeSozinhoSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                </View>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Cama compartilhada com:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.quemCompartilhaCama}
+                        onChangeText={newText=>setDadosLocal({...dados, quemCompartilhaCama: newText})}
+                    />
+                    <Text>Dorme que horas?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.horarioDormir}
+                        onChangeText={newText=>setDadosLocal({...dados, horarioDormir: newText})}
+                    />
+                    <Text>Acorda que horas?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.horarioAcordar}
+                        onChangeText={newText=>setDadosLocal({...dados, horarioAcordar: newText})}
+                    />
+                </View>
+            </View>
+            <Text style={{fontWeight: 'bold', marginTop: 10}}>DESENVOLVIMENTO NEUROPSICOMOTOR</Text>
             <Text>Com qual idade passou a sentar sem apoio?</Text>
             <TextInput
                 style={styles.input}
@@ -200,75 +209,88 @@ export default function SonoEDesenvolvimento( {setDados} ) {
                  onChangeText={newText=>setDadosLocal({...dados, andouSemSuporte: newText})}
             />
             
-            <Text>Dentre os itens a seguir, pressione aqueles que estiveram presentes (com grau de significância) durante a infância nos primeiros anos de vida:</Text>
+            <Text style={{marginTop: 10, marginBottom: 5}}>Dentre os itens a seguir, pressione aqueles que estiveram presentes (com grau de significância) durante a infância nos primeiros anos de vida:</Text>
             {Array.isArray(dados.itensSignificantes) && dados.itensSignificantes.map((item, index)=> (
                 <TouchableOpacity key={index} onPress={()=>{
                     const newItensSignificantes = [...dados.itensSignificantes]
                     newItensSignificantes[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, itensSignificantes: newItensSignificantes})
                 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                     </View>
                 </TouchableOpacity>
             ))}
 
-            <Text>Apresenta manipulação de objetos com os dedos?</Text>
-            <Seletor
-                selecionado={dados.sentouSemApoio_cg}
-                aoMudar={value=>setDadosLocal({...dados, sentouSemApoio_cg: value})}
-                lista={simOuNao}
-            />
-            <Text>Pratica algum esporte?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.praticaEsportes}
-                onChangeText={newText=>setDadosLocal({...dados, praticaEsportes: newText})}
-            />
-            <Text>Pratica autoagressão?</Text>
-            <Seletor
-                selecionado={dados.autoAgressao}
-                aoMudar={value=>setDadosLocal({...dados, autoAgressao: value})}
-                lista={simOuNao}
-            />
-            <Text>Pratica heteroagressão?</Text>
-            <Seletor
-                selecionado={dados.autoAgressao}
-                aoMudar={value=>setDadosLocal({...dados, autoAgressao: value})}
-                lista={simOuNao}
-            />
-            <Text>Pratica heteroagressão?</Text>
-            <Seletor
-                selecionado={dados.heteroAgressao}
-                aoMudar={value=>setDadosLocal({...dados, heteroAgressao: value})}
-                lista={simOuNao}
-            />
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text style={{marginTop: 10, marginBottom: 5}}>Apresenta manipulação de objetos com os dedos?</Text>
+                    <Seletor
+                        selecionado={dados.sentouSemApoio_cg}
+                        aoMudar={value=>setDadosLocal({...dados, sentouSemApoio_cg: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Pratica algum esporte?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.praticaEsportes}
+                        onChangeText={newText=>setDadosLocal({...dados, praticaEsportes: newText})}
+                    />
+                    <Text>Pratica autoagressão?</Text>
+                    <Seletor
+                        selecionado={dados.autoAgressao}
+                        aoMudar={value=>setDadosLocal({...dados, autoAgressao: value})}
+                        lista={simOuNao}
+                    />
+                </View>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Pratica heteroagressão?</Text>
+                    <Seletor
+                        selecionado={dados.autoAgressao}
+                        aoMudar={value=>setDadosLocal({...dados, autoAgressao: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Pratica heteroagressão?</Text>
+                    <Seletor
+                        selecionado={dados.heteroAgressao}
+                        aoMudar={value=>setDadosLocal({...dados, heteroAgressao: value})}
+                        lista={simOuNao}
+                    />
+                </View>
+            </View>
             <Text style={{fontWeight: 'bold'}}>Desenvolvimento da linguagem</Text>
-            <Text>Com qual idade começou a balbuciar?</Text>
-            <TextInput
-                value={dados.idadeBalbuciou}
-                onChangeText={newText=>setDadosLocal({...dados, idadeBalbuciou: newText})}
-                style={styles.input}
-            />
-            <Text>Com que idade emitiu sílabas?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.idadeSilabas}
-                onChangeText={newText=>setDadosLocal({...dados, idadeSilabas: newText})}
-            />
-            <Text>Com que idade emitiu as primeiras palavras?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.primeirasPalavras}
-                onChangeText={newText=>setDadosLocal({...dados, idadeSilabas: newText})}
-            />
-            <Text>Com que idade emitiu as primeiras palavras</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.primeirasFrases}
-                onChangeText={newText=>setDadosLocal({...dados, primeirasFrases: newText})}
-            />
+
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Com qual idade começou a balbuciar?</Text>
+                    <TextInput
+                        value={dados.idadeBalbuciou}
+                        onChangeText={newText=>setDadosLocal({...dados, idadeBalbuciou: newText})}
+                        style={styles.input}
+                    />
+                    <Text>Com que idade emitiu sílabas?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.idadeSilabas}
+                        onChangeText={newText=>setDadosLocal({...dados, idadeSilabas: newText})}
+                    />
+                </View>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Com que idade emitiu as primeiras palavras?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.primeirasPalavras}
+                        onChangeText={newText=>setDadosLocal({...dados, idadeSilabas: newText})}
+                    />
+                    <Text>Com que idade emitiu as primeiras palavras</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.primeirasFrases}
+                        onChangeText={newText=>setDadosLocal({...dados, primeirasFrases: newText})}
+                    />
+                </View>
+            </View>
             <Text>Apresentou dificuldades no desenvolvimento da linguagem?</Text>
             <Seletor
                 selecionado={dados.difDesenvolvimentoLinguagem}
@@ -282,198 +304,230 @@ export default function SonoEDesenvolvimento( {setDados} ) {
                     newAtualmente[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, atualmente: newAtualmente})
                 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWight: 'bold'}}>{item.value}</Text>
                     </View>
                 </TouchableOpacity>
             })}
-            <Text>Descreva brevemente alguma dificuldade cognitiva que seu filho apresente:</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.dificuldadeCognitiva}
-                onChangeText={newText=>setDadosLocal({...dados, dificuldadeCognitiva: newText})}
-            />
-            <Text>Descreva brevemente alguma habilidade especial que seu filho apresente:</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.habilidadeEspecial}
-                onChangeText={newText=>setDadosLocal({...dados, habilidadeEspecial: newText})}
-            />
-            <Text>Possui dificuldades na compreensão da linguagem?</Text>
-            <Seletor
-                selecionado={dados.difComprLinguagem}
-                aoMudar={value=>setDadosLocal({...dados, difComprLinguagem: value})}
-                lista={simOuNao}
-            />
-            <Text>Como reage quando contrariado?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.reacaoContrariado}
-                onChangeText={newText=>setDadosLocal({...dados, reacaoContrariado: newText})}
-            />
-            <Text style={{fontWeight: 'bold'}}>Autocuidado</Text>
-            <Text>Toma banho sozinho?</Text>
-            <Seletor
-                selecionado={dados.banhoSozinho}
-                aoMudar={value=>setDadosLocal({...dados, banhoSozinho: value})}
-                lista={difAutocuidado}
-            />
-            <Text>Escova os dentes sozinho?</Text>
-            <Seletor
-                selecionado={dados.escovaDentesSozinho}
-                aoMudar={value=>setDadosLocal({...dados, escovaDentesSozinho: value})}
-                lista={difAutocuidado}
-            />
-            <Text>Limpa-se sozinho?</Text>
-            <Seletor
-                selecionado={dados.limpaSozinho}
-                aoMudar={value=>setDadosLocal({...dados, limpaSozinho: value})}
-                lista={difAutocuidado}
-            />
-            <Text>Ao cuidar da própria higiene, atrapalha-se com a sequência de tarefas?</Text>
-            <Seletor
-                selecionado={dados.atrapalhaComHigiene}
-                aoMudar={value=>setDadosLocal({...dados, atrapalhaComHigiene: value})}
-                lista={difAutocuidado}
-            />
-            <Text>Veste-se sozinho?</Text>
-            <Seletor
-                selecionado={dados.vesteSozinho}
-                aoMudar={value=>setDadosLocal({...dados, vesteSozinho: value})}
-                lista={difAutocuidado}
-            />
-            <Text>Amarra os cadarços sozinho?</Text>
-            <Seletor
-                selecionado={dados.amarraCadarcos}
-                aoMudar={value=>setDadosLocal({...dados, amarraCadarcos: value})}
-                lista={difAutocuidado}
-            />
 
-            <Text style={{fontWeight: 'bold'}}>Sociabilidade / afetividade</Text>
-            <Text>Apresenta sorriso espontâneo a pessoas familiares</Text>
-            <Seletor
-                selecionado={dados.sorrisoEspontaneoFamiliares}
-                aoMudar={value=>setDadosLocal({...dados, sorrisoEspontaneoFamiliares: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Apresenta sorriso espontâneo a pessoas não familiares</Text>
-            <Seletor
-                selecionado={dados.sorrisoEspontaneoNaoFamiliares}
-                aoMudar={value=>setDadosLocal({...dados, sorrisoEspontaneoNaoFamiliares: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Apresenta sorriso em resposta ao sorriso de outras pessoas?</Text>
-            <Seletor
-                selecionado={dados.sorrisoResposta}
-                aoMudar={value=>setDadosLocal({...dados, sorrisoResposta: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Variação na expressão facial (contentamento, frustração, surpresa, constrangimento)</Text>
-            <Seletor
-                selecionado={dados.variacaoExpressaoFacial}
-                aoMudar={value=>setDadosLocal({...dados, variacaoExpressaoFacial: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Expressão emocional apropriada ao contexto</Text>
-            <Seletor
-                selecionado={dados.exprEmocionalContexto}
-                aoMudar={value=>setDadosLocal({...dados, exprEmocionalContexto: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Compartilha atividades prazerosas com outras pessoas</Text>
-            <Seletor
-                selecionado={dados.compAtivPrazOutros}
-                aoMudar={value=>setDadosLocal({...dados, compAtivPrazOutros: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Prefere ficar sozinho</Text>
-            <Seletor
-                selecionado={dados.ficarSozinho}
-                aoMudar={value=>setDadosLocal({...dados, ficarSozinho: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Excessivamente quieto ou tímido</Text>
-            <Seletor
-                selecionado={dados.quietoTimido}
-                aoMudar={value=>setDadosLocal({...dados, quietoTimido: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Mais interessado em objetos que em pessoas</Text>
-            <Seletor
-                selecionado={dados.interessadoObjetos}
-                aoMudar={value=>setDadosLocal({...dados, interessadoObjetos: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Demonstra preocupação se os pais estão tristes/doentes/nachucados?</Text>
-            <Seletor
-                selecionado={dados.preocupPaisDoentesTristes}
-                aoMudar={value=>setDadosLocal({...dados, preocupPaisDoentesTristes: value})}
-                lista={difSociabilidadeAfetividade}
-            />
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text style={{marginTop: 10}}>Descreva brevemente alguma dificuldade cognitiva que seu filho apresente:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.dificuldadeCognitiva}
+                        onChangeText={newText=>setDadosLocal({...dados, dificuldadeCognitiva: newText})}
+                    />
+                    <Text>Descreva brevemente alguma habilidade especial que seu filho apresente:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.habilidadeEspecial}
+                        onChangeText={newText=>setDadosLocal({...dados, habilidadeEspecial: newText})}
+                    />
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Possui dificuldades na compreensão da linguagem?</Text>
+                    <Seletor
+                        selecionado={dados.difComprLinguagem}
+                        aoMudar={value=>setDadosLocal({...dados, difComprLinguagem: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Como reage quando contrariado?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.reacaoContrariado}
+                        onChangeText={newText=>setDadosLocal({...dados, reacaoContrariado: newText})}
+                    />
+                </View>
+            </View>
+            <Text style={{fontWeight: 'bold', marginTop: 10}}>Autocuidado</Text>
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Toma banho sozinho?</Text>
+                    <Seletor
+                        selecionado={dados.banhoSozinho}
+                        aoMudar={value=>setDadosLocal({...dados, banhoSozinho: value})}
+                        lista={difAutocuidado}
+                    />
+                    <Text>Escova os dentes sozinho?</Text>
+                    <Seletor
+                        selecionado={dados.escovaDentesSozinho}
+                        aoMudar={value=>setDadosLocal({...dados, escovaDentesSozinho: value})}
+                        lista={difAutocuidado}
+                    />
+                    <Text>Limpa-se sozinho?</Text>
+                    <Seletor
+                        selecionado={dados.limpaSozinho}
+                        aoMudar={value=>setDadosLocal({...dados, limpaSozinho: value})}
+                        lista={difAutocuidado}
+                    />
+                </View>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Ao cuidar da própria higiene, atrapalha-se com a sequência de tarefas?</Text>
+                    <Seletor
+                        selecionado={dados.atrapalhaComHigiene}
+                        aoMudar={value=>setDadosLocal({...dados, atrapalhaComHigiene: value})}
+                        lista={difAutocuidado}
+                    />
+                    <Text>Veste-se sozinho?</Text>
+                    <Seletor
+                        selecionado={dados.vesteSozinho}
+                        aoMudar={value=>setDadosLocal({...dados, vesteSozinho: value})}
+                        lista={difAutocuidado}
+                    />
+                    <Text>Amarra os cadarços sozinho?</Text>
+                    <Seletor
+                        selecionado={dados.amarraCadarcos}
+                        aoMudar={value=>setDadosLocal({...dados, amarraCadarcos: value})}
+                        lista={difAutocuidado}
+                    />
+                </View>
+            </View>
+
+            <Text style={{fontWeight: 'bold', marginTop: 10}}>Sociabilidade / afetividade</Text>
+
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Apresenta sorriso espontâneo a pessoas familiares</Text>
+                    <Seletor
+                        selecionado={dados.sorrisoEspontaneoFamiliares}
+                        aoMudar={value=>setDadosLocal({...dados, sorrisoEspontaneoFamiliares: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Apresenta sorriso espontâneo a pessoas não familiares</Text>
+                    <Seletor
+                        selecionado={dados.sorrisoEspontaneoNaoFamiliares}
+                        aoMudar={value=>setDadosLocal({...dados, sorrisoEspontaneoNaoFamiliares: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Apresenta sorriso em resposta ao sorriso de outras pessoas?</Text>
+                    <Seletor
+                        selecionado={dados.sorrisoResposta}
+                        aoMudar={value=>setDadosLocal({...dados, sorrisoResposta: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Variação na expressão facial (contentamento, frustração, surpresa, constrangimento)</Text>
+                    <Seletor
+                        selecionado={dados.variacaoExpressaoFacial}
+                        aoMudar={value=>setDadosLocal({...dados, variacaoExpressaoFacial: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Expressão emocional apropriada ao contexto</Text>
+                    <Seletor
+                        selecionado={dados.exprEmocionalContexto}
+                        aoMudar={value=>setDadosLocal({...dados, exprEmocionalContexto: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />     
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Compartilha atividades prazerosas com outras pessoas</Text>
+                    <Seletor
+                        selecionado={dados.compAtivPrazOutros}
+                        aoMudar={value=>setDadosLocal({...dados, compAtivPrazOutros: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Prefere ficar sozinho</Text>
+                    <Seletor
+                        selecionado={dados.ficarSozinho}
+                        aoMudar={value=>setDadosLocal({...dados, ficarSozinho: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Excessivamente quieto ou tímido</Text>
+                    <Seletor
+                        selecionado={dados.quietoTimido}
+                        aoMudar={value=>setDadosLocal({...dados, quietoTimido: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Mais interessado em objetos que em pessoas</Text>
+                    <Seletor
+                        selecionado={dados.interessadoObjetos}
+                        aoMudar={value=>setDadosLocal({...dados, interessadoObjetos: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Demonstra preocupação se os pais estão tristes/doentes/nachucados?</Text>
+                    <Seletor
+                        selecionado={dados.preocupPaisDoentesTristes}
+                        aoMudar={value=>setDadosLocal({...dados, preocupPaisDoentesTristes: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                </View>
+            </View>
+
 
             <Text style={{fontWeight: 'bold'}}>Atenção compartilhada</Text>
-            <Text>Mostra, traz pra perto do rosto do parceiro ou aponta objetos / eventos de interesse variados apenas para compartilhar?</Text>
-            <Seletor
-                lista={difSociabilidadeAfetividade}
-                selecionado={dados.mostraObjComp}
-                aoMudar={value=>setDadosLocal({...dados, mostraObjComp: value})}
-            />
-            <Text>Olha para onde o parceiro aponta</Text>
-            <Seletor
-                lista={difSociabilidadeAfetividade}
-                selecionado={dados.olhaAponta}
-                aoMudar={value=>setDadosLocal({...dados, olhaAponta: value})}
-            />
-            <Text>Responde aos convites para brincar</Text>
-            <Seletor
-                lista={difSociabilidadeAfetividade}
-                selecionado={dados.respBrincar}
-                aoMudar={value=>setDadosLocal({...dados, respBrincar: value})}
-            />
-            <Text style={{fontWeigth: 'bold'}}>Respostas / iniciativas sociais com outras crianças</Text>
-            <Text>Iniciativa de aproximação ou interesse em outras crianças</Text>
-            <Seletor
-                lista={difSociabilidadeAfetividade}
-                selecionado={dados.aproxIntCriancas}
-                aoMudar={value=>setDadosLocal({...dados, aproxIntCriancas: value})}
-            />
-            <Text>Responde mas não toma iniciativa</Text>
-            <Seletor
-                lista={difSociabilidadeAfetividade}
-                selecionado={dados.respSemIniciativa}
-                aoMudar={value=>setDadosLocal({...dados, respSemIniciativa: value})}
-            />
-            <Text>Fica ansioso com a presença de outras crianças / adolescentes?</Text>
-            <Seletor
-                selecionado={dados.ansiosoPresencaCriAdol}
-                aoMudar={value => setDadosLocal({...dados, ansiosoPresencaCriAdol: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Gosta de brincar com grupos</Text>
-            <Seletor
-                selecionado={dados.brincaGrupos}
-                aoMudar={value=>setDadosLocal({...dados, brincaGrupos: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Fica intensamente ansioso quando na presença de pessoas que não são do seu convívio?</Text>
-            <Seletor
-                selecionado={dados.ansiosoNaoConvivio}
-                aoMudar={value=>setDadosLocal({...dados, ansiosoNaoConvivio:value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Ignora ou evita de forma persistente esse contato?</Text>
-            <Seletor
-                selecionado={dados.evitaContato}
-                aoMudar={value=>setDadosLocal({...dados, evitaContato: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Excessiva desinibição para a idade em relação a pessoas estranhas?</Text>
-            <Seletor
-                selecionado={dados.excessivaDesinibicao}
-                aoMudar={value=>setDadosLocal({...dados, excessivaDesinibicao: value})}
-                lista={difSociabilidadeAfetividade}
-            />
+
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Mostra, traz pra perto do rosto do parceiro ou aponta objetos / eventos de interesse variados apenas para compartilhar?</Text>
+                    <Seletor
+                        lista={difSociabilidadeAfetividade}
+                        selecionado={dados.mostraObjComp}
+                        aoMudar={value=>setDadosLocal({...dados, mostraObjComp: value})}
+                    />
+                    <Text>Olha para onde o parceiro aponta</Text>
+                    <Seletor
+                        lista={difSociabilidadeAfetividade}
+                        selecionado={dados.olhaAponta}
+                        aoMudar={value=>setDadosLocal({...dados, olhaAponta: value})}
+                    />
+                    <Text>Responde aos convites para brincar</Text>
+                    <Seletor
+                        lista={difSociabilidadeAfetividade}
+                        selecionado={dados.respBrincar}
+                        aoMudar={value=>setDadosLocal({...dados, respBrincar: value})}
+                    />
+                    <Text style={{fontWeigth: 'bold'}}>Respostas / iniciativas sociais com outras crianças</Text>
+                    <Text>Iniciativa de aproximação ou interesse em outras crianças</Text>
+                    <Seletor
+                        lista={difSociabilidadeAfetividade}
+                        selecionado={dados.aproxIntCriancas}
+                        aoMudar={value=>setDadosLocal({...dados, aproxIntCriancas: value})}
+                    />
+                    <Text>Responde mas não toma iniciativa</Text>
+                    <Seletor
+                        lista={difSociabilidadeAfetividade}
+                        selecionado={dados.respSemIniciativa}
+                        aoMudar={value=>setDadosLocal({...dados, respSemIniciativa: value})}
+                    />
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Fica ansioso com a presença de outras crianças / adolescentes?</Text>
+                    <Seletor
+                        selecionado={dados.ansiosoPresencaCriAdol}
+                        aoMudar={value => setDadosLocal({...dados, ansiosoPresencaCriAdol: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Gosta de brincar com grupos</Text>
+                    <Seletor
+                        selecionado={dados.brincaGrupos}
+                        aoMudar={value=>setDadosLocal({...dados, brincaGrupos: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Fica intensamente ansioso quando na presença de pessoas que não são do seu convívio?</Text>
+                    <Seletor
+                        selecionado={dados.ansiosoNaoConvivio}
+                        aoMudar={value=>setDadosLocal({...dados, ansiosoNaoConvivio:value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Ignora ou evita de forma persistente esse contato?</Text>
+                    <Seletor
+                        selecionado={dados.evitaContato}
+                        aoMudar={value=>setDadosLocal({...dados, evitaContato: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Excessiva desinibição para a idade em relação a pessoas estranhas?</Text>
+                    <Seletor
+                        selecionado={dados.excessivaDesinibicao}
+                        aoMudar={value=>setDadosLocal({...dados, excessivaDesinibicao: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                </View>
+            </View>
+
             <Text style={{fontWeight: 'bold'}}>Comportamento de apego</Text>
             {Array.isArray(dados.comportApego) && dados.comportApego.map((item, index)=>{
                 return <View key={index}>
@@ -490,79 +544,95 @@ export default function SonoEDesenvolvimento( {setDados} ) {
                 </View>
             })}
             <Text style={{fontWeight: 'bold'}}>Brincadeira</Text>
-            <Text>Quais os brinquedos e atividades favoritas?</Text>
-            <TextInput
-                onChangeText={newText=>setDadosLocal({...dados, brinquedoAtividade: newText})}
-                value={dados.brinquedoAtividade}
-                style={styles.input}
-            />
-            <Text>Manipula vários objetos/brinquedos</Text>
-            <Seletor
-                selecionado={dados.manipulaObjBrinquedo}
-                aoMudar={value=>setDadosLocal({...dados, manipulaObjBrinquedo: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Formas de exploração dos brinquedos (ex. brinca de faz de conta; usa os objetos de forma funcional; demonstra interesse pelo cheiro ou movimento dos objetos; atividade repetitiva - alinhar, girar objetos sem função aparente):</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={newText=>setDadosLocal({...dados, exploraBrinquedos: newText})}
-                value={dados.exploraBrinquedos}
-            />
-            <Text>Brinca de faz de conta usando um objeto como se fosse outro?</Text>
-            <Seletor
-                selecionado={dados.brincaFazDeConta}
-                aoMudar={value=>setDadosLocal({...dados, brincaFazDeConta: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Brinca de faz de conta atribuindo diferentes papéis a si mesmo e aos outros (médico/enfermeira/professora)?</Text>
-            <Seletor
-                selecionado={dados.brincaPapeisOutros}
-                aoMudar={value=>setDadosLocal({...dados, brincaPapeisOutros: value})}
-                lista={difSociabilidadeAfetividade}
-            />
+
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Quais os brinquedos e atividades favoritas?</Text>
+                    <TextInput
+                        onChangeText={newText=>setDadosLocal({...dados, brinquedoAtividade: newText})}
+                        value={dados.brinquedoAtividade}
+                        style={styles.input}
+                    />
+                    <Text>Manipula vários objetos/brinquedos</Text>
+                    <Seletor
+                        selecionado={dados.manipulaObjBrinquedo}
+                        aoMudar={value=>setDadosLocal({...dados, manipulaObjBrinquedo: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Brinca de faz de conta usando um objeto como se fosse outro?</Text>
+                    <Seletor
+                        selecionado={dados.brincaFazDeConta}
+                        aoMudar={value=>setDadosLocal({...dados, brincaFazDeConta: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Formas de exploração dos brinquedos (ex. brinca de faz de conta; usa os objetos de forma funcional; demonstra interesse pelo cheiro ou movimento dos objetos; atividade repetitiva - alinhar, girar objetos sem função aparente):</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={newText=>setDadosLocal({...dados, exploraBrinquedos: newText})}
+                        value={dados.exploraBrinquedos}
+                    />
+                    <Text>Brinca de faz de conta atribuindo diferentes papéis a si mesmo e aos outros (médico/enfermeira/professora)?</Text>
+                    <Seletor
+                        selecionado={dados.brincaPapeisOutros}
+                        aoMudar={value=>setDadosLocal({...dados, brincaPapeisOutros: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                </View>
+            </View>
+
             <Text style={{fontWeight: 'bold'}}>Comportamentos repetitivos e rituais</Text>
-            <Text>Alinha, empilha objetos quando brincando sem aparente função no brenqudo?</Text>
-            <Seletor
-                selecionado={dados.alinhaEmpilhaObj}
-                aoMudar={value=>setDadosLocal({...dados, alinhaEmpilhaObj: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Faz brincadeiras com partes de objetos em vez de um objeto como um todo (ex: ignora o carrinho e gira apenas as rodas por um longo tempo)?</Text>
-            <Seletor
-                selecionado={dados.brincPartesObj}
-                aoMudar={value=>setDadosLocal({...dados, brincPartesObj: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Abre/fecha portas, gavetas; liga/desliga interruptores de luz; intenso interesse por objetos que giram (ex: máquina dalevar, ventilador, veículos em geral). Considerar a idade e persistência.</Text>
-            <Seletor
-                selecionado={dados.abreFechaLigaDesliga}
-                aoMudar={value=>setDadosLocal({...dados, abreFechaLigaDesliga: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Como reage quando a brincadeira é interrompida?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.reageBrincInterrompida}
-                onChangeText={newText=>setDadosLocal({...dados, reageBrincInterrompida: newText})}
-            />
-            <Text>Resistência a mudanças na rotina pessoal / da casa?</Text>
-            <Seletor
-                selecionado={dados.resistenciaMudancaRotina}
-                aoMudar={value=>setDadosLocal({...dados, resistenciaMudancaRotina: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Sequência fixa e rígida para atividades (ex: vestir-se, arrumar a casa, higiene pessoal)?</Text>
-            <Seletor
-                selecionado={dados.sequenciaFixaAtiv}
-                aoMudar={value=>setDadosLocal({...dados, sequenciaFixaAtiv: value})}
-                lista={difSociabilidadeAfetividade}
-            />
-            <Text>Como reage quando interrompida?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.reageInterrompida}
-                onChangeText={newText=>setDadosLocal({...dados, reageInterrompida: newText})}
-            />
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Alinha, empilha objetos quando brincando sem aparente função no brenqudo?</Text>
+                    <Seletor
+                        selecionado={dados.alinhaEmpilhaObj}
+                        aoMudar={value=>setDadosLocal({...dados, alinhaEmpilhaObj: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Faz brincadeiras com partes de objetos em vez de um objeto como um todo (ex: ignora o carrinho e gira apenas as rodas por um longo tempo)?</Text>
+                    <Seletor
+                        selecionado={dados.brincPartesObj}
+                        aoMudar={value=>setDadosLocal({...dados, brincPartesObj: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Como reage quando a brincadeira é interrompida?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.reageBrincInterrompida}
+                        onChangeText={newText=>setDadosLocal({...dados, reageBrincInterrompida: newText})}
+                    />
+                    <Text>Resistência a mudanças na rotina pessoal / da casa?</Text>
+                    <Seletor
+                        selecionado={dados.resistenciaMudancaRotina}
+                        aoMudar={value=>setDadosLocal({...dados, resistenciaMudancaRotina: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Abre/fecha portas, gavetas; liga/desliga interruptores de luz; intenso interesse por objetos que giram (ex: máquina dalevar, ventilador, veículos em geral). Considerar a idade e persistência.</Text>
+                    <Seletor
+                        selecionado={dados.abreFechaLigaDesliga}
+                        aoMudar={value=>setDadosLocal({...dados, abreFechaLigaDesliga: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Sequência fixa e rígida para atividades (ex: vestir-se, arrumar a casa, higiene pessoal)?</Text>
+                    <Seletor
+                        selecionado={dados.sequenciaFixaAtiv}
+                        aoMudar={value=>setDadosLocal({...dados, sequenciaFixaAtiv: value})}
+                        lista={difSociabilidadeAfetividade}
+                    />
+                    <Text>Como reage quando interrompida?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.reageInterrompida}
+                        onChangeText={newText=>setDadosLocal({...dados, reageInterrompida: newText})}
+                    />
+                </View>
+            </View>
             <Text>Apresenta os comportamentos a seguir?</Text>
             {dados.apresentaComportamentos.map((item, index)=> {
                 return <TouchableOpacity key={index} onPress={()=>{
@@ -570,13 +640,13 @@ export default function SonoEDesenvolvimento( {setDados} ) {
                     newApresentaComportamentos[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, apresentaComportamentos: newApresentaComportamentos})
                 }}>
-                            <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                            <View style={{justifyContent: 'space-between', flexDirection: 'row', borderBottomWidth: 1}}>
                                 <Text>{item.label}</Text>
                                 <Text style={{fontWeight:'bold'}}>{item.value}</Text>
                             </View>
                 </TouchableOpacity> 
             })}
-            <Text>Medos (relacionar medos discrepantes com a etapa evolutiva-frequÊncia, intensidade, grau de interferÊncia em outras atividades da família, facilidade com que é acalmado /distraído):</Text>
+            <Text style={{marginTop: 10, marginBottom: 5}}>Medos (relacionar medos discrepantes com a etapa evolutiva-frequÊncia, intensidade, grau de interferÊncia em outras atividades da família, facilidade com que é acalmado /distraído):</Text>
             <TextInput
                 style={styles.input}
                 value={dados.medos}
@@ -586,10 +656,20 @@ export default function SonoEDesenvolvimento( {setDados} ) {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
+const styles =  StyleSheet.create({
+    mobileContainer: {
+        marginTop: 10,
         gap: 10,
-        marginTop: 15
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 5,
+        width: '100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     input: {
         borderWidth: 1,
@@ -597,23 +677,10 @@ const styles = StyleSheet.create({
         height: 40,
         paddingLeft: 20
     },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 10,
-    },
-    checkbox: {
-        width: 24,
-        height: 24,
-        borderWidth: 2,
-        borderRadius: 5,
-        borderColor: "#444",
-        marginRight: 10,
-    },
-    checkboxSelected: {
-        backgroundColor: "#4CAF50",
-    },
-    label: {
-        fontSize: 16,
+    column: {
+        flex: 1,
+        marginHorizontal: 5, 
+        padding: 5,
+        gap: 5
     }
 })

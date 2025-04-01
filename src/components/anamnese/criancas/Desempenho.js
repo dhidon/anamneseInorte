@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, StyleSheet, Platform, Dimensions } from "react-native";
 
 import Seletor from "../../Seletor";
 
@@ -26,6 +26,9 @@ export default function Desempenho( {setDados} ) {
         {label: 'Sim', value: 'sim'},
         {label: 'Não', value: 'não'}
     ]
+
+    const larguraTela = Dimensions.get("window").width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
 
     useEffect(()=>{
         setDados(dados)
@@ -84,11 +87,32 @@ export default function Desempenho( {setDados} ) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles =  StyleSheet.create({
+    mobileContainer: {
+        marginTop: 10,
+        gap: 10,
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 5,
+        width: '100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     input: {
         borderWidth: 1,
         borderRadius: 8,
         height: 40,
-        paddingLeft: 20
+        paddingLeft: 20,
+        marginTop: 5
+    },
+    column: {
+        flex: 1,
+        marginHorizontal: 5, 
+        padding: 5,
+        gap: 5
     }
 })

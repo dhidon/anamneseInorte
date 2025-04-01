@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, StyleSheet, Button } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Button, Platform, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Header from "../../../components/Header";
@@ -17,6 +17,9 @@ export default function CriancasHistoricoScreen( {route} ) {
     const [dadosSono, setDadosSono] = useState({})
     const [dadosDesempenho, setDadosDesempenho] = useState({})
 
+    const larguraTela = Dimensions.get('window').width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
+
     const handleNext =() => {
         const dadosTotais = {
             ...dados,
@@ -30,8 +33,8 @@ export default function CriancasHistoricoScreen( {route} ) {
 
     return (
         <ScrollView>
-            <View style={styles.container}>
-                <Header direcionado='Crianças'/>
+            <View style={ehDesktop ? styles.desktopContainer : styles.mobileContainer}>
+                <Header/>
                 <GestacaoNascimento setDados={setDadosGestacao}/>
                 <Alimentacao setDados={setDadosAlimentacao}/>
                 <SonoEDesenvolvimento setDados={setDadosSono}/>
@@ -43,8 +46,16 @@ export default function CriancasHistoricoScreen( {route} ) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        margin: 20,
-        gap: 10
+    desktopContainer: {
+        marginTop: 10,
+        gap: 10,
+        padding: 150,
+        width: '50%',
+        alignSelf: 'center',
+    },
+    mobileContainer: {
+        gap: 10,
+        flex: 1,
+        margin: 10
     }
 })

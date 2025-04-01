@@ -5,6 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 export default function Seletor({selecionado, aoMudar, lista}) {
     const larguraTela = Dimensions.get('window').width
     const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
+    
     return (
         <View>
             <Picker

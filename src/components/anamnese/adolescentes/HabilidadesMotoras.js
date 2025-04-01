@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, Platform } from "react-native";
 
 import Seletor from "../../Seletor";
 
@@ -37,6 +37,9 @@ export default function HabilidadesMotoras( {setDados} ) {
         {label: 'Não', value: 'não'}
     ]
 
+    const larguraTela = Dimensions.get('window').width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
+
     useEffect(()=>{
         setDados(dados)
     }, [dados])
@@ -51,55 +54,62 @@ export default function HabilidadesMotoras( {setDados} ) {
                     newHabilidades[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, habilidadesMotoras: newHabilidades})
                 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBorromWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                     </View>
                 </TouchableOpacity>
             })}
-            <Text style={{fontWeight: 'bold'}}>VISÃO</Text>
-            <Text>Consegue manter contato visual por muito tempo?</Text>
-            <Seletor
-                selecionado={dados.contatoVisualSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, contatoVisualSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Inclina a cabeça para olhar?</Text>
-            <Seletor
-                selecionado={dados.inclinaCabecaSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, inclinaCabecaSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Aproxima objetos dos olhos?</Text>
-            <Seletor
-                selecionado={dados.aproximaObjetosSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, aproximaObjetosSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Afasta os objetos?</Text>
-            <Seletor
-                selecionado={dados.afastaObjetosSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, afastaObjetosSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Movimento excessivo dos olhos?</Text>
-            <Seletor
-                selecionado={dados.movimentoOlhosSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, movimentoOlhosSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Já realizou avaliação oftalmológica?</Text>
-            <Seletor
-                selecionado={dados.avOftalmoSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, avOftalmoSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Reclama de dores de cabeça constantes, principalmente na região fronto-temporal?</Text>
-            <Seletor
-                selecionado={dados.dorCabecaSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, dorCabecaSelecionado: value})}
-                lista={simOuNao}
-            />
+            <Text style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>VISÃO</Text>
+            <View style={ehDesktop ? styles.desktopContainer : styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Consegue manter contato visual por muito tempo?</Text>
+                    <Seletor
+                        selecionado={dados.contatoVisualSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, contatoVisualSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Inclina a cabeça para olhar?</Text>
+                    <Seletor
+                        selecionado={dados.inclinaCabecaSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, inclinaCabecaSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Aproxima objetos dos olhos?</Text>
+                    <Seletor
+                        selecionado={dados.aproximaObjetosSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, aproximaObjetosSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Afasta os objetos?</Text>
+                    <Seletor
+                        selecionado={dados.afastaObjetosSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, afastaObjetosSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Movimento excessivo dos olhos?</Text>
+                    <Seletor
+                        selecionado={dados.movimentoOlhosSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, movimentoOlhosSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Já realizou avaliação oftalmológica?</Text>
+                    <Seletor
+                        selecionado={dados.avOftalmoSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, avOftalmoSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Reclama de dores de cabeça constantes, principalmente na região fronto-temporal?</Text>
+                    <Seletor
+                        selecionado={dados.dorCabecaSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, dorCabecaSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                </View>
+            </View>
             <Text style={{fontWeight: 'bold'}}>AUDIÇÃO</Text>
             <Text>Apresenta dificuldade auditiva?</Text>
             <Seletor
@@ -164,11 +174,31 @@ export default function HabilidadesMotoras( {setDados} ) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles =  StyleSheet.create({
+    mobileContainer: {
+        marginTop: 10,
+        gap: 10,
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 5,
+        width: '100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     input: {
         borderWidth: 1,
         borderRadius: 8,
         height: 40,
         paddingLeft: 20
+    },
+    column: {
+        flex: 1,
+        marginHorizontal: 5, 
+        padding: 5,
+        gap: 5
     }
 })

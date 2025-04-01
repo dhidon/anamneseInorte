@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform, Dimensions } from "react-native";
 
 import Seletor from "../../Seletor";
 
@@ -69,46 +69,50 @@ export default function DesenvolvimentoSocial( {setDados}) {
         {value: 'não', label: 'Não'}
     ]
 
+    const larguraTela = Dimensions.get('window').width
+    const ehADesktop = larguraTela > 1024 && Platform.OS === 'web'
+
     useEffect(()=>{
         setDados(dados)
     }, [dados])
+
     return (
-        <View style={styles.container}>
+        <View>
             <Text>DESENVOLVIMENTO SOCIAL</Text>
-            <Text>Marque quais destas características sociais seu filho apresenta?</Text>
+            <Text style={{marginTop: 10, marginBottom: 5}}>Marque quais destas características sociais seu filho apresenta</Text>
             {dados.caracteristicasSociais.map((item, index)=>{
                 return <TouchableOpacity key={index} onPress={()=>{
                     const newCaracteristicas = [...dados.caracteristicasSociais]
                     newCaracteristicas[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, caracteristicasSociais: newCaracteristicas})
                 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                     </View>
                 </TouchableOpacity>
             })}
-            <Text>Quais são as atividades favoritas do seu filho?</Text>
+            <Text style={{marginTop: 10, marginBottom: 5}}>Quais são as atividades favoritas do seu filho?</Text>
             <TextInput
                 style={styles.input}
                 value={dados.atividadesFavoritas}
                 onChangeText={newText=>setDadosLocal({...dados, atividadesFavoritas: newText})}
             />
-            <Text style={{fontWeight: 'bold'}}>COMPORTAMENTO</Text>
-            <Text>Marque as opções que descrevam comportamentos apresentados pelo seu filho</Text>
+            <Text style={{fontWeight: 'bold', marginTop: 10, marginBottom: 5}}>COMPORTAMENTO</Text>
+            <Text style={{marginBottom: 5}}>Marque as opções que descrevam comportamentos apresentados pelo seu filho</Text>
             {dados.comportamento.map((item, index)=> {
                 return <TouchableOpacity key={index} onPress={()=>{
                     const newComportamento = [...dados.comportamento]
                     newComportamento[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, comportamento: newComportamento})
                 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                     </View>
                 </TouchableOpacity>
             })}
-            <Text>Seu filho tem problemas com limites?</Text>
+            <Text style={{marginTop: 10, marginBottom: 5}}>Seu filho tem problemas com limites?</Text>
             <Seletor
                 selecionado={dados.probLimiteSelecionado}
                 aoMudar={value=>setDadosLocal({...dados, probLimiteSelecionado: value})}
@@ -130,15 +134,31 @@ export default function DesenvolvimentoSocial( {setDados}) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles =  StyleSheet.create({
+    mobileContainer: {
+        marginTop: 10,
+        gap: 10,
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 5,
+        width: '100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     input: {
         borderWidth: 1,
         borderRadius: 8,
         height: 40,
         paddingLeft: 20
     },
-    container: {
-        gap: 10,
-        marginBottom: 10
+    column: {
+        flex: 1,
+        marginHorizontal: 5, 
+        padding: 5,
+        gap: 5
     }
 })

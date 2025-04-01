@@ -99,8 +99,8 @@ export default function GestacaoNascimento( { setDados } ) {
                 placeholder='A criança nasceu com quantas semanas?'
             />
 
+            <Text>APGAR:</Text>
             <View style={ehDesktop ? styles.desktopContainer : styles.mobileContainer}>
-                <Text>APGAR:</Text>
                 <View style={ehDesktop ? styles.column : null}>
                     <TextInput
                         style={styles.input}

@@ -18,7 +18,7 @@ export default function LoginScreen() {
 
     const efetuarLogin = () => {
         if (credenciais.find(c => c.usuario === usuario && c.senha === senha)) {
-            navigation.navigate('Identificação');
+            navigation.navigate('Setores');
         } else {
             alert('Usuário ou senha inválidos');
         }

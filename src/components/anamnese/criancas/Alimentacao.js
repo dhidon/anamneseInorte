@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Platform } from "react-native";
 
 import Slider from "@react-native-community/slider";
 import Seletor from "../../Seletor";
@@ -31,103 +31,113 @@ export default function Alimentacao( { setDados }) {
 
     const simOuNao = [{label: 'Sim', value: 'sim'}, {label: 'Não', value: 'não'}]
 
+    const larguraTela = Dimensions.get('window').width
+    const ehDesktop = larguraTela > 1024 && Platform.OS == 'web'
+
     useEffect(()=>{
         setDados(dados)
     }, [dados])
 
     return (
-        <View style={styles.container}>
+        <View>
             <Text>ALIMENTAÇÃO</Text>
-            <Text>A criança mamou?</Text>
-            <Seletor
-                selecionado={dados.mamouSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, mamouSelecionado: value})}
-                lista={simOuNao}
-            />
-            {dados.mamouSelecionado === 'sim'
-            ? <View>
-                <Text>Aleitamento materno esclusivo até quantos meses?</Text>
-                <TextInput
-                    style={styles.input}
-                    value={dados.leiteMatExclMes}
-                    onChangeText={newText=>setDadosLocal({...dados, leiteMatExclMes: newText})}
-                />
-                <Text>Mamou até quantos meses?</Text>
-                <TextInput
-                    style={styles.input}
-                    value={dados.mamouIdade}
-                    onChangeText={newText=>setDadosLocal({...dados, mamouIdade: newText})}
-                />
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>A criança mamou?</Text>
+                    <Seletor
+                        selecionado={dados.mamouSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, mamouSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                    {dados.mamouSelecionado === 'sim'
+                    ? <View>
+                        <Text>Aleitamento materno esclusivo até quantos meses?</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={dados.leiteMatExclMes}
+                            onChangeText={newText=>setDadosLocal({...dados, leiteMatExclMes: newText})}
+                        />
+                        <Text>Mamou até quantos meses?</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={dados.mamouIdade}
+                            onChangeText={newText=>setDadosLocal({...dados, mamouIdade: newText})}
+                        />
+                    </View>
+                    :null}
+                    <Text>Usou mamadeira?</Text>
+                    <Seletor
+                        selecionado={dados.mamadeiraSelecionada}
+                        aoMudar={value=>setDadosLocal({...dados, mamadeiraSelecionada: value})}
+                        lista={simOuNao}
+                    />
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Usou chupeta?</Text>
+                    <Seletor
+                        selecionado={dados.chupetaSelecionada}
+                        aoMudar={value=>setDadosLocal({...dados, chupetaSelecionada: value})}
+                        lista={simOuNao}
+                    />
+                    <Text>Com qual idade foi feita a introdução alimentar?</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 10}}>
+                        <Slider
+                            minimumValue={0}
+                            maximumValue={10}
+                            value={0}
+                            onValueChange={newValue=>setDadosLocal({...dados, idadeIntroAlimentar: newValue})}
+                            step={1}
+                            style={{width: '80%'}}
+                        />
+                        <Text style={{borderWidth: 1, borderRadius: 3, padding: 5}}>{dados.idadeIntroAlimentar}</Text>
+                    </View>
+                </View>
             </View>
-            :null}
-            <Text>Usou mamadeira?</Text>
-            <Seletor
-                selecionado={dados.mamadeiraSelecionada}
-                aoMudar={value=>setDadosLocal({...dados, mamadeiraSelecionada: value})}
-                lista={simOuNao}
-            />
-            <Text>Usou chupeta?</Text>
-            <Seletor
-                selecionado={dados.chupetaSelecionada}
-                aoMudar={value=>setDadosLocal({...dados, chupetaSelecionada: value})}
-                lista={simOuNao}
-            />
-            <Text>Com qual idade foi feita a introdução alimentar?</Text>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 10}}>
-                <Slider
-                    minimumValue={0}
-                    maximumValue={10}
-                    value={0}
-                    onValueChange={newValue=>setDadosLocal({...dados, idadeIntroAlimentar: newValue})}
-                    step={1}
-                    style={{width: '80%'}}
-                />
-                <Text style={{borderWidth: 1, borderRadius: 3, padding: 5}}>{dados.idadeIntroAlimentar}</Text>
-            </View>
-            <Text>Apresentou dificuldade na introdução alimentar?</Text>
-            <Seletor
-                selecionado={dados.difIntroAlimentarSelecionada}
-                aoMudar={value=>setDadosLocal({...dados, difIntroAlimentarSelecionada: value})}
-                lista={simOuNao}
-            />
-            {dados.difIntroAlimentarSelecionada === 'sim'
-            ?<View>
-                <Text>Quais?</Text>
-                <TextInput
-                    style={styles.input}
-                    value={dados.qualDifAlimentar}
-                    onChangeText={newText=>setDadosLocal({...dados, qualDifAlimentar: newText})}
-                />
-            </View>
-            :null}
+                    <Text>Apresentou dificuldade na introdução alimentar?</Text>
+                    <Seletor
+                        selecionado={dados.difIntroAlimentarSelecionada}
+                        aoMudar={value=>setDadosLocal({...dados, difIntroAlimentarSelecionada: value})}
+                        lista={simOuNao}
+                    />
+                    {dados.difIntroAlimentarSelecionada === 'sim'
+                    ?<View>
+                        <Text>Quais?</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={dados.qualDifAlimentar}
+                            onChangeText={newText=>setDadosLocal({...dados, qualDifAlimentar: newText})}
+                        />
+                    </View>
+                    :null}
             <Text>ATUALMENTE</Text>
             <Text style={{fontWeight: 'bold'}}>Aceita bem as consistencias de alimentos a seguir?</Text>
-                        {dados.consistencias.map((item, index) => {
-                            return <TouchableOpacity key={index} onPress={()=>{
-                                const newConsistencias = [...dados.consistencias]
-                                newConsistencias[index].value = item.value === 'não' ? 'sim' : 'não'
-                                setDadosLocal({...dados, consistencias: newConsistencias})
-                            }}>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                    <Text>{item.label}</Text>
-                                    <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        })}
-                        <Text style={{fontWeight: 'bold'}}>Apresentou algum problema na alimentação?</Text>
-                        {dados.problemaAlimentacao.map((item, index)=> {
-                            return <TouchableOpacity key={index} onPress={()=> {
-                                const newProblemaAlimentacao = [...dados.problemaAlimentacao]
-                                newProblemaAlimentacao[index].value = item.value === 'não' ? 'sim' : 'não'
-                                setDadosLocal({...dados, problemaAlimentacao: newProblemaAlimentacao})
-                            }}>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                    <Text>{item.label}</Text>
-                                    <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        })}
-            <Text>Apresenta alguma seletividade em relação a comida? Quais?</Text>
+                {dados.consistencias.map((item, index) => {
+                    return <TouchableOpacity key={index} onPress={()=>{
+                        const newConsistencias = [...dados.consistencias]
+                        newConsistencias[index].value = item.value === 'não' ? 'sim' : 'não'
+                        setDadosLocal({...dados, consistencias: newConsistencias})
+                    }}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
+                            <Text>{item.label}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                        </View>
+                    </TouchableOpacity>
+                })}
+                <Text style={{fontWeight: 'bold'}}>Apresentou algum problema na alimentação?</Text>
+                {dados.problemaAlimentacao.map((item, index)=> {
+                    return <TouchableOpacity key={index} onPress={()=> {
+                        const newProblemaAlimentacao = [...dados.problemaAlimentacao]
+                        newProblemaAlimentacao[index].value = item.value === 'não' ? 'sim' : 'não'
+                        setDadosLocal({...dados, problemaAlimentacao: newProblemaAlimentacao})
+                    }}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
+                            <Text>{item.label}</Text>
+                            <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
+                        </View>
+                    </TouchableOpacity>
+                })}
+            <Text style={{marginTop: 10}}>Apresenta alguma seletividade em relação a comida? Quais?</Text>
             <TextInput
                 style={styles.input}
                 value={dados.seletividadeAlimentar}
@@ -137,14 +147,31 @@ export default function Alimentacao( { setDados }) {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        gap: 10
+const styles =  StyleSheet.create({
+    mobileContainer: {
+        marginTop: 10,
+        gap: 10,
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 5,
+        width: '100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     input: {
         borderWidth: 1,
         borderRadius: 8,
         height: 40,
         paddingLeft: 20
+    },
+    column: {
+        flex: 1,
+        marginHorizontal: 5, 
+        padding: 5,
+        gap: 5
     }
 })

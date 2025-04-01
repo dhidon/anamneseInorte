@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { View, StyleSheet, Text, TextInput, Button, Alert } from "react-native";
+import { View, StyleSheet, Text, TextInput, Button, Alert, Platform, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Header from "../../components/Header";
@@ -16,6 +16,9 @@ export default function Profissionais( {route} ) {
         anamneseRealizada,
         tecnico
     }
+
+    const larguraTela = Dimensions.get("window").width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
 
     const subirDados = () => {
         if (!anamneseRealizada || !tecnico) {
@@ -40,7 +43,7 @@ export default function Profissionais( {route} ) {
     
 
     return (
-        <View style={styles.container}>
+        <View style={ehDesktop ? styles.desktopContainer : styles.mobileContainer}>
             <Header/>
             <Text>Anamnese realizada com:</Text>
             <TextInput
@@ -60,12 +63,19 @@ export default function Profissionais( {route} ) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        margin: 20,
-        gap: 10
+    desktopContainer: {
+        marginTop: 10,
+        gap: 10,
+        padding: 150,
+        width: '50%',
+        alignSelf: 'center',
     },
-    input: {
+    mobileContainer: {
+        gap: 10,
+        flex: 1,
+        margin: 10
+    },
+    input : {
         borderWidth: 1,
         borderRadius: 8,
         height: 40,
