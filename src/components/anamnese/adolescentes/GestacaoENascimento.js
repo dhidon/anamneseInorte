@@ -1,39 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Dimensions, Platform } from "react-native";
 import Seletor from "../../Seletor"
 
 export default function GestacaoNascimento( { setDados } ) {
     const [dados, setDadosLocal] = useState({
-        gestacaoSelecionada: [],
-        preNatalSelecionado: [],
-        intercorrenciaSelecionada: [],
+        gestacaoSelecionada: [0],
+        preNatalSelecionado: [0],
+        intercorrenciaSelecionada: [0],
         qualIntercorrencia: '',
-        medicamentoSelecionado: [],
+        medicamentoSelecionado: [0],
         partoSelecionado: [
             {label: 'Vaginal', value: 'vaginal'},
             {label: 'Cesárea', value: 'cesarea'}
         ],
-        motivoParto: [],
+        motivoParto: '',
         semanas: '',
         primeiro: '',
         quinto: '',
         comprimento: '',
-        problemaSelecionado: [],
-        oxigenioSelecionado: [],
-        cianoticoSelecionado: [],
-        chorouSelecionado: [],
-        ictericiaSelecionada: [],
-        fototerapiaSelecionado: []
+        problemaSelecionado: [0],
+        oxigenioSelecionado: [0],
+        cianoticoSelecionado: [0],
+        chorouSelecionado: [0],
+        ictericiaSelecionada: [0],
+        fototerapiaSelecionado: [0]
     })
     
     const simOuNao = [{label: 'Sim', value: 'sim'}, {label: 'Não', value: 'nao'}]
+
+    const larguraTela = Dimensions.get('window').width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
 
     useEffect(()=>{
         setDados(dados)
     }, [dados])
   
     return (
-        <View style={styles.container}>
+        <View style={ehDesktop ? styles.desktopContainer : styles.mobileContainer}>
             <Text style={{fontWeight: 'bold'}}>3. Histórico de desenvolvimento</Text>
             <Text>GESTAÇÃO E NASCIMENTO</Text>
             <Text>A gestação foi planejada?</Text>
@@ -154,9 +157,18 @@ export default function GestacaoNascimento( { setDados } ) {
 }
 
 const styles =  StyleSheet.create({
-    container: {
-        flex: 1,
-        gap: 10
+    mobileContainer: {
+        marginTop: 10,
+        gap: 10,
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 10,
+        padding: 150,
+        width: '50%',
+        alignSelf: 'center',
+        flexDirection: 'row'
     },
     input: {
         borderWidth: 1,

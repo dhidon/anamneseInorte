@@ -11,7 +11,7 @@ export default function Header({direcionado}) {
                 <Image source={require('../images/logoProjeto.png')} style={styles.logo} />
             </View>
             <View style={styles.titulo}>
-                <Text style={styles.textoTitulo}>ANAMNESE PARA AVALIAÇÃO INTERDISCIPLINAR - {direcionado}</Text>
+                <Text style={styles.textoTitulo}>ANAMNESE PARA AVALIAÇÃO INTERDISCIPLINAR{direcionado}</Text>
             </View>
         </View>
     );
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
     textoTitulo: {
         fontSize: 16,
-        textAlign: 'justify'
+        textAlign: 'center'
     },
     titulo: {
         marginHorizontal: 20

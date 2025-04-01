@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Modal } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, Modal, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
@@ -18,7 +18,7 @@ export default function LoginScreen() {
 
     const efetuarLogin = () => {
         if (credenciais.find(c => c.usuario === usuario && c.senha === senha)) {
-            navigation.navigate('Home');
+            navigation.navigate('Identificação');
         } else {
             alert('Usuário ou senha inválidos');
         }
@@ -32,6 +32,7 @@ export default function LoginScreen() {
 
     return (
         <View style={styles.container}>
+            <Image source={require('../images/logo-card.png')} style={styles.logo}/>
             <Button title='Fazer login' onPress={() => setLoginVisible(true)} />
             <Button title='Criar novo usuário' onPress={() => setNewUserVisible(true)} />
             <Modal
@@ -103,7 +104,12 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 10
+        gap: 10,
+        borderWidth: 2,
+        borderRadius: 8,
+        alignSelf: 'center',
+        width: 400,
+        marginVertical: 90
     },
     modalContainer: {
         flex: 1,
@@ -119,5 +125,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         gap: 10
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        borderRadius: 50
     }
 });

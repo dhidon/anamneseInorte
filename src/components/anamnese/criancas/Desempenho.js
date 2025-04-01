@@ -5,9 +5,9 @@ import Seletor from "../../Seletor";
 
 export default function Desempenho( {setDados} ) {
     const [dados, setDadosLocal] = useState({
-        frequentaEscolaSelecionado: [],
+        frequentaEscolaSelecionado: [0],
         nomeEscola: '',
-        fazAeeSelecionado: [],
+        fazAeeSelecionado: [0],
         serieEscola: '',
         turnoEscola: '',
         difAprend: '',

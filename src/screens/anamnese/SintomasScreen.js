@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Platform, ScrollView, Button } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Sintomas( {setDados} ) {
-    const [dados, setDadosLocal] = useState({
+export default function SintomasScreen( {route} ) {
+    const navigation = useNavigation()
+    const {dados} = route.params
+
+    const [dadosSintomas, setDadosLocal] = useState({
         motivo_cg_1: '',
         profissionais_cg_2: '',
         convive_cg_3: '',
@@ -25,43 +29,46 @@ export default function Sintomas( {setDados} ) {
             {id: 'doencaNeurologica_cg_36', label: 'Doença ou enfermidade neurológica', value: 'não', parentesco: ''}
         ]
     })
+    const [dadosIdSint, setDadosIdSint] = useState({...dados, ...dadosSintomas})
+
+    const larguraTela = Dimensions.get('window').width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
 
     useEffect(()=>{
-        setDados(dados)
-    }, [dados])
+        setDadosIdSint({
+            ...dados,
+            ...dadosSintomas
+        })
+    }, [dadosSintomas])
 
     return (
-        <View style={styles.container}>
-            <Button
-                title='log'
-                onPress={()=>{
-                    console.log(dados.condicoes[0])
-                }}/>
+        <ScrollView>
+        <View style={ehDesktop ? styles.desktopContainer : styles.mobileContainer}>
             <Text style={{fontWeight: 'bold'}}>2. SINTOMAS</Text>
             <Text>Qual o principal motivo do paciente estar realizando esta avaliação?</Text>
             <TextInput
                 style={styles.input}
-                value={dados.motivo}
-                onChangeText={newText=>setDadosLocal({...dados, motivo: newText})}
+                value={dadosSintomas.motivo}
+                onChangeText={newText=>setDadosLocal({...dadosSintomas, motivo: newText})}
             />
             <Text>Que profissionais estão fazendo o acompanhamento?</Text>
             <TextInput
                 style={styles.input}
-                value={dados.profissionais}
-                onChangeText={newText=>setDadosLocal({...dados, profissionais: newText})}
+                value={dadosSintomas.profissionais}
+                onChangeText={newText=>setDadosLocal({...dadosSintomas, profissionais: newText})}
             />
             <Text>Com quem o adolescente passa mais tempo?</Text>
             <TextInput
                 style={styles.input}
-                value={dados.convive}
-                onChangeText={newText=>setDadosLocal({...dados, convive: newText})}
+                value={dadosSintomas.convive}
+                onChangeText={newText=>setDadosLocal({...dadosSintomas, convive: newText})}
             />
             <Text>Pressione as condições ou doenças que algum membro da família (pais, irmãos, tias, tios, primos, avós) já teve. Anote o grau de parentesco com a criança</Text>
-            {dados.condicoes.map((item, index)=>
+            {dadosSintomas.condicoes.map((item, index)=>
                 <TouchableOpacity key={index} onPress={() => {
-                    const newCondicoes = [...dados.condicoes];
+                    const newCondicoes = [...dadosSintomas.condicoes];
                     newCondicoes[index].value = item.value === 'não' ? 'sim' : 'não';
-                    setDadosLocal({...dados, condicoes: newCondicoes});
+                    setDadosLocal({...dadosSintomas, condicoes: newCondicoes});
                 }}>
                      <View>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -71,11 +78,11 @@ export default function Sintomas( {setDados} ) {
                         {item.value === 'sim'
                         ?<TextInput
                             placeholder='Qual o parentesco?'
-                                style={styles.input}
+                                style={[styles.input, {marginTop: 7}]}
                                 value={item.parentesco}
                                 onChangeText={newText=>setDadosLocal({
-                                ...dados,
-                                condicoes: dados.condicoes.map((item, i) => 
+                                ...dadosSintomas,
+                                condicoes: dadosSintomas.condicoes.map((item, i) => 
                                 i === index ? { ...item, parentesco: newText } : item)})}
                         />
                         :null
@@ -83,7 +90,12 @@ export default function Sintomas( {setDados} ) {
                     </View>
                 </TouchableOpacity>
             )}
+
+            <Text style={styles.title}>A qual grupo pertence o paciente que você está atendendo?</Text>
+            <Button title='Adolescentes' onPress={()=> navigation.navigate('Histórico - Adolescente', {dadosIdSint})}/>
+            <Button title='Crianças' onPress={()=> navigation.navigate('Histórico - Crianças', {dadosIdSint})}/>
         </View>
+        </ScrollView>
     )
 }
 
@@ -94,27 +106,31 @@ const styles = StyleSheet.create({
         height: 40,
         paddingLeft: 20
     },
-    container: {
+    mobileContainer: {
         gap: 10,
-        flex: 1
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 10,
-    },
-    checkbox: {
-        width: 24,
-        height: 24,
-        borderWidth: 2,
-        borderRadius: 5,
-        borderColor: "#444",
-        marginRight: 10,
-    },
-    checkboxSelected: {
-        backgroundColor: "#4CAF50",
+        flex: 1,
+        margin: 10
     },
     label: {
         fontSize: 16,
+    },
+    title:{
+        textAlign: 'justify',
+        fontSize: 16,
+        marginTop: 40
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 10,
+        padding: 150,
+        width: '50%',
+        alignSelf: 'center',
+    },
+    mobileInput: {
+        width: '100%',
+        borderWidth: 1,
+        borderRadius: 8,
+        height: 40,
+        paddingLeft: 20
     }
 })

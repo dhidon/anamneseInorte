@@ -6,26 +6,26 @@ import Seletor from "../../Seletor";
 
 export default function Alimentacao( { setDados }) {
     const [dados, setDadosLocal] = useState({
-        mamouSelecionado: [],
+        mamouSelecionado: [0],
         leiteMatExclMes: '',
         mamouIdade: '',
-        mamadeiraSelecionada: [],
-        chupetaSelecionada: [],
+        mamadeiraSelecionada: [0],
+        chupetaSelecionada: [0],
         idadeIntroAlimentar: 0,
-        difIntroAlimentarSelecionada: [],
+        difIntroAlimentarSelecionada: [0],
         qualDifAlimentar: '',
-        consistenciasSelecionadas: [],
-        probAlimentacaoSelecionado: [],
+        consistenciasSelecionadas: [0],
+        probAlimentacaoSelecionado: [0],
         seletividadeAlimentar: '',
         consistencias: [
-            {id: 0, label: 'Sólido', value: 'não'},
-            {id: 1, label: 'Líquido', value: 'não'},
-            {id: 2, label: 'Pastoso', value: 'não'}
+            {id: 'solido', label: 'Sólido', value: 'não'},
+            {id: 'liquido', label: 'Líquido', value: 'não'},
+            {id: 'pastoso', label: 'Pastoso', value: 'não'}
         ],
         problemaAlimentacao: [
-            {id: 0, label: 'Alteração na mastigaçao', value: 'não'},
-            {id: 1, label: 'Pouco apetite', value: 'não'},
-            {id: 2, label: 'Voracidade', value: 'não'}
+            {id: 'alteracaoMastigacao', label: 'Alteração na mastigaçao', value: 'não'},
+            {id: 'poucoApetite', label: 'Pouco apetite', value: 'não'},
+            {id: 'voracidade', label: 'Voracidade', value: 'não'}
         ]
     })
 

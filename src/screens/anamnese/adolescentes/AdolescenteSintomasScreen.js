@@ -3,7 +3,7 @@ import { View, ScrollView, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Header from "../../../components/Header";
-import Sintomas from "../../../components/anamnese/adolescentes/Sintomas";
+import Sintomas from "../SintomasScreen";
 
 export default function AdolescenteSintomas( {route} ) {
     const {dadosIdentificacao} = route.params

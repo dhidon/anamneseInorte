@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Dimensions, Platform, Button, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-import Seletor from "../../Seletor";
+import Seletor from '../../components/Seletor'
+import Header from '../../components/Header'
 
 
-export default function Identificacao( {setData} ) {
+
+export default function IdentificacaoScreen() {
+    const navigation = useNavigation()
     const [dados, setDadosLocal] = useState({
         data_cad_1: '',
         nome_cad_2: '',
@@ -101,12 +105,15 @@ export default function Identificacao( {setData} ) {
         generateIdade()
     }, [dados.nascimento_cad_4])
 
-    useEffect(() => {
-        setData(dados);
-    }, [dados]);
+    const larguraTela = Dimensions.get('window').width
+
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
 
     return (
-            <View style={styles.container}>
+        <ScrollView>
+            <View style={ehDesktop ? styles.desktopContainer : styles.mobileContainer}>
+                <Header/>
+
                 <View>
                     <Text>Data:</Text>
                     <TextInput 
@@ -116,70 +123,86 @@ export default function Identificacao( {setData} ) {
                         value={dados.data_cad_1}
                     />
                 </View>
+
             <Text style={styles.titulo}>1. Dados de Identificação</Text>
-            <Text>Nome completo:</Text>
-            <TextInput
-                placeholder={dados.nome_cad_2}
-                style={styles.input}
-                onChangeText={newText => setDadosLocal({...dados, nome_cad_2: newText})}
-            />
-            <Text>Data de nascimento:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder='DD/MM/AAAA'
-                onChangeText={texto=>formatarData(texto, setDadosLocal, 'nascimento_cad_4')}
-                value={dados.nascimento_cad_4}
-            />
-            
-            
-            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 30}}>
-            <Text>Idade:</Text>
-            <Text style={{borderWidth: 1, borderRadius: 3, padding: 5}}>
-                {dados.idade_cad_3 ? dados.idade_cad_3 : '0'}
-            </Text>
+
+            <View style={ehDesktop ? styles.desktopColumn : null}>
+                <Text>Nome completo:</Text>
+                <TextInput
+                    placeholder={dados.nome_cad_2}
+                    style={ehDesktop ? styles.input : styles.mobileInput}
+                    onChangeText={newText => setDadosLocal({...dados, nome_cad_2: newText})}
+                />
+                <Text>Nº SUS:</Text>
+                <TextInput
+                    value={dados.sus_cad_5}
+                    style={[styles.input, {width: 120}]}
+                    placeholder='___ ___ ___ ___'
+                    onChangeText={formatarSus}
+                    maxLength={19}
+                    keyboardType="numeric"
+                />
             </View>
-            <Text>Nº SUS:</Text>
-            <TextInput
-                value={dados.sus_cad_5}
-                style={styles.input}
-                placeholder='___ ___ ___ ___'
-                onChangeText={formatarSus}
-                maxLength={19}
-                keyboardType="numeric"
-            />
-            <Text>Endereço:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={(newText) => setDadosLocal({...dados, endereco_cad_6: newText})}
-                value={dados.endereco_cad_6}
-            />
-            <Text>Bairro:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={(newText) => setDadosLocal({...dados, bairro_cad_8: newText})}
-                value={dados.bairro_cad_8}
-            />
-            <Text>CEP:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={formatarCep}
-                value={dados.cep_cad_9}
-            />
-            <Text>Cidade/UF:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={(newText) => setDadosLocal({...dados, cidadeUf_cad_10: newText})}
-                value={dados.cidadeUf_cad_10}
-            />
+
+                <Text>Data de nascimento:</Text>
+            <View style={ehDesktop ? styles.desktopColumn : null}>
+                <TextInput
+                    style={styles.input}
+                    placeholder='DD/MM/AAAA'
+                    onChangeText={texto=>formatarData(texto, setDadosLocal, 'nascimento_cad_4')}
+                    value={dados.nascimento_cad_4}
+                />
+                <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 30}}>
+                <Text>Idade:</Text>
+                <Text style={{borderWidth: 1, borderRadius: 3, padding: 5}}>
+                    {dados.idade_cad_3 ? dados.idade_cad_3 : '0'}
+                </Text>
+            </View>
+
+
+                </View>
+                <Text>Endereço:</Text>
+            <View style={ehDesktop ? styles.desktopColumn : null}>
+                <TextInput
+                    style={ehDesktop ? styles.input : styles.mobileInput}
+                    onChangeText={(newText) => setDadosLocal({...dados, endereco_cad_6: newText})}
+                    value={dados.endereco_cad_6}
+                    placeholder='Rua e número da casa'
+                />
+                <TextInput
+                    style={ehDesktop ? styles.input : styles.mobileInput}
+                    onChangeText={(newText) => setDadosLocal({...dados, bairro_cad_8: newText})}
+                    value={dados.bairro_cad_8}
+                    placeholder='Bairro'
+                />
+            </View>
+            
+            <View style={ehDesktop ? styles.desktopColumn : null}>
+                <TextInput
+                    style={ehDesktop ? styles.input : styles.mobileInput}
+                    onChangeText={(newText) => setDadosLocal({...dados, cidadeUf_cad_10: newText})}
+                    value={dados.cidadeUf_cad_10}
+                    placeholder='Cidade, UF'
+                />
+                <TextInput
+                    style={styles.input}
+                    onChangeText={formatarCep}
+                    value={dados.cep_cad_9}
+                    placeholder='CEP'
+                />
+            </View>
             <Text>Informante:</Text>
             <TextInput
-                style={styles.input}
+                style={ehDesktop ? styles.input : styles.mobileInput}
                 onChangeText={(newText) => setDadosLocal({...dados, informante_cad_7: newText})}
                 value={dados.informante_cad_7}
+                placeholder='Qual o nome de quem está informando?'
             />
+
             <Text>Dados da mãe:</Text>
+            <View style={ehDesktop ? styles.desktopColumn : null}>
             <TextInput
-                style={styles.input}
+                style={ehDesktop ? styles.input : styles.mobileInput}
                 onChangeText={newText => setDadosLocal({...dados, mae_cad_11: newText})}
                 value={dados.mae_cad_11}
                 placeholder='Nome'
@@ -190,31 +213,36 @@ export default function Identificacao( {setData} ) {
                 value={dados.nascimentoMae_cad_12}
                 placeholder='Data de nascimento'
             />
+            </View>
             <TextInput
-                style={styles.input}
+                style={ehDesktop ? styles.input : styles.mobileInput}
                 value={dados.profissaoMae_cad_13}
                 onChangeText={newText => setDadosLocal({...dados, profissaoMae_cad_13: newText})}
                 placeholder='Profissão'
             />
+
+
             <Text>Dados do pai:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={newText => setDadosLocal({...dados, pai_cad_14: newText})}
-                value={dados.pai_cad_14}
-                placeholder='Nome'
-            />
-            <TextInput
-                style={styles.input}
-                onChangeText={texto=>formatarData(texto, setDadosLocal, 'nascimentoPai_cad_15')}
-                value={dados.nascimentoPai_cad_15}
-                placeholder='Data de nascimento'
-            />
-            <TextInput
-                style={styles.input}
-                value={dados.profissaoPai_cad_16}
-                onChangeText={newText => setDadosLocal({...dados, profissaoPai_cad_16: newText})}
-                placeholder='Profissão'
-            />
+            <View style={ehDesktop ? styles.desktopColumn : null}>
+                <TextInput
+                    style={ehDesktop ? styles.input : styles.mobileInput}
+                    onChangeText={newText => setDadosLocal({...dados, pai_cad_14: newText})}
+                    value={dados.pai_cad_14}
+                    placeholder='Nome'
+                />
+                <TextInput
+                    style={styles.input}
+                    onChangeText={texto=>formatarData(texto, setDadosLocal, 'nascimentoPai_cad_15')}
+                    value={dados.nascimentoPai_cad_15}
+                    placeholder='Data de nascimento'
+                />
+            </View>
+                <TextInput
+                    style={ehDesktop ? styles.input : styles.mobileInput}
+                    value={dados.profissaoPai_cad_16}
+                    onChangeText={newText => setDadosLocal({...dados, profissaoPai_cad_16: newText})}
+                    placeholder='Profissão'
+                />
             <Text>Estado civil dos pais:</Text>
             <Seletor
                 selecionado={dados.estadoCivilSelecionado_cad_17}
@@ -239,7 +267,7 @@ export default function Identificacao( {setData} ) {
                 ? <View style={{gap: 10}}>
                     <Text>Qual o nome do padrasto/madrasta?</Text>
                     <TextInput
-                    style={styles.input}
+                    style={ehDesktop ? styles.input : styles.mobileInput}
                     value={dados.padrastoMadrasta_cad_20}
                     onChangeText={newText => setDadosLocal({...dados, padrastoMadrasta_cad_20: newText})}
                     />
@@ -247,7 +275,7 @@ export default function Identificacao( {setData} ) {
                 :<View style={{gap: 10}}>
                     <Text>Qual o motivo?</Text>
                     <TextInput
-                        style={styles.input}
+                        style={ehDesktop ? styles.input : styles.mobileInput}
                         value={dados.motivo_cad_21}
                         onChangeText={newText=>setDadosLocal({...dados, motivo_cad_21: newText})}
                     />
@@ -258,7 +286,7 @@ export default function Identificacao( {setData} ) {
                         lista={guardiaoLegal}
                     />
                     <TextInput
-                        style={styles.input}
+                        style={ehDesktop ? styles.input : styles.mobileInput}
                         value={dados.guardiao_cad_22}
                         onChangeText={newText=>setDadosLocal({...dados, guardiao_cad_22: newText})}
                         placeholder='Nome'
@@ -267,7 +295,9 @@ export default function Identificacao( {setData} ) {
             </View>
             : null
             }
+            <Button title='Ir para Sintomas' onPress={()=> navigation.navigate('Sintomas', {dados})}/>
             </View>
+            </ScrollView>
     )
 }
 
@@ -275,14 +305,33 @@ const styles = StyleSheet.create({
     titulo:{
         fontWeight: 'bold'
     },
-    container: {
+    mobileContainer: {
         marginTop: 10,
-        
         gap: 10,
-
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 10,
+        padding: 150,
+        width: '50%',
+        alignSelf: 'center',
     },
     input: {
         borderWidth: 1, 
+        borderRadius: 8,
+        height: 40,
+        paddingLeft: 20,
+        width: 200
+    },
+    desktopColumn:{
+        flexDirection: 'row', 
+        flex: 1, 
+        gap: 10
+    },
+    mobileInput: {
+        width: '100%',
+        borderWidth: 1,
         borderRadius: 8,
         height: 40,
         paddingLeft: 20

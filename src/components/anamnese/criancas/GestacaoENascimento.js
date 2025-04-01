@@ -4,26 +4,26 @@ import Seletor from "../../Seletor"
 
 export default function GestacaoNascimento( { setDados } ) {
     const [dados, setDadosLocal] = useState({
-        gestacaoSelecionada: [],
-        preNatalSelecionado: [],
-        intercorrenciaSelecionada: [],
+        gestacaoSelecionada: [0],
+        preNatalSelecionado: [0],
+        intercorrenciaSelecionada: [0],
         qualIntercorrencia: '',
-        medicamentoSelecionado: [],
+        medicamentoSelecionado: [0],
         partoSelecionado: [
             {id: 1, label: 'Normal', value: 'normal'},
             {id: 2, label: 'Cesárea', value: 'cesarea'}
         ],
-        motivoParto: [],
+        motivoParto: [0],
         semanas: '',
         primeiro: '',
         quinto: '',
         comprimento: '',
-        problemaSelecionado: [],
-        oxigenioSelecionado: [],
-        cianoticoSelecionado: [],
-        chorouSelecionado: [],
-        ictericiaSelecionada: [],
-        fototerapiaSelecionado: []
+        problemaSelecionado: [0],
+        oxigenioSelecionado: [0],
+        cianoticoSelecionado: [0],
+        chorouSelecionado: [0],
+        ictericiaSelecionada: [0],
+        fototerapiaSelecionado: [0]
     })
     
     const simOuNao = [{label: 'Sim', value: 'sim'}, {label: 'Não', value: 'nao'}]

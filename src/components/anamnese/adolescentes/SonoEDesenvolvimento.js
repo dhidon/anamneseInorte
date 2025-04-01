@@ -6,12 +6,12 @@ import Seletor from "../../Seletor";
 export default function SonoEDesenvolvimento( {setDados} ) {
     const [dados, setDadosLocal] = useState({
         formaSono: '',
-        dormeSozinhoSelecionado: [],
+        dormeSozinhoSelecionado: [0],
         quemCompartilhaCama:'',
         horarioDormir: '',
         horarioAcordar: '',
-        problemaCrescimentoSelecionado: [],
-        itensSignificantesSelecionados: [],
+        problemaCrescimentoSelecionado: [0],
+        itensSignificantesSelecionados: [0],
         comportamentos:[
             {value: 'sorrir', label: 'Sorrir', idade:''},
             {value: 'rolar', label: 'Rolar', idade: ''},
@@ -32,20 +32,20 @@ export default function SonoEDesenvolvimento( {setDados} ) {
             {value: 'andarBicicleta', label: 'Andar de bicicleta', idade:''},
         ],
         itensSignificantes: [
-            {id: 1, label: 'Extremamente quieto ou inativo', value: 'não'},
-            {id: 2, label: 'Raramente quieto ou inativo', value: 'não'},
-            {id: 3, label: 'Excessivamente inquieto', value: 'não'},
-            {id: 4, label: 'Não gostava de colo ou afago', value: 'não'},
-            {id: 5, label: 'Pouco alerta', value: 'não'},
-            {id: 6, label: 'Dificuldade para se acalmar', value: 'não'},
-            {id: 7, label: 'Cólicas', value: 'não'},
-            {id: 8, label: 'Sono excessivo', value: 'não'},
-            {id: 9, label: 'Pouco Sono', value: 'não'},
-            {id: 10, label: 'Batidas na cabeça', value: 'não'},
-            {id: 11, label: 'Incômodo com som', value: 'não'},
-            {id: 12, label: 'Sem noção do perigo', value: 'não'},
-            {id: 13, label: 'Explorava tudo o tempo todo', value: 'não'},
-            {id: 14, label: 'Excessivo número de acidentes em comparação com outras crianças', value: 'não'}
+            {id: 'extrQuietoInativo', label: 'Extremamente quieto ou inativo', value: 'não'},
+            {id: 'raramenteQuietoInativo', label: 'Raramente quieto ou inativo', value: 'não'},
+            {id: 'excessInquieto', label: 'Excessivamente inquieto', value: 'não'},
+            {id: 'naoColoAfago', label: 'Não gostava de colo ou afago', value: 'não'},
+            {id: 'poucoAlerta', label: 'Pouco alerta', value: 'não'},
+            {id: 'difAcalmar', label: 'Dificuldade para se acalmar', value: 'não'},
+            {id: 'colicas', label: 'Cólicas', value: 'não'},
+            {id: 'sonoExcess', label: 'Sono excessivo', value: 'não'},
+            {id: 'poucoSono', label: 'Pouco Sono', value: 'não'},
+            {id: 'batidasCabeca', label: 'Batidas na cabeça', value: 'não'},
+            {id: 'incomodoSom', label: 'Incômodo com som', value: 'não'},
+            {id: 'semNocaoPerigo', label: 'Sem noção do perigo', value: 'não'},
+            {id: 'eploraTudoSempre', label: 'Explorava tudo o tempo todo', value: 'não'},
+            {id: 'numeroAcidentesAcimaMedia', label: 'Excessivo número de acidentes em comparação com outras crianças', value: 'não'}
         ]
     })
 
