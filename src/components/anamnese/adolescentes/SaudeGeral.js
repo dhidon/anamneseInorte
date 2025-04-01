@@ -88,20 +88,20 @@ export default function SaudeGeral( {setDados} ) {
                     newCondicoes[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, condicoes: newCondicoes})
                 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                     </View>
                 </TouchableOpacity>
             })}
-            <Text style={{fontWeight: 'bold', marginTop: 10}}>ATUALMENTE</Text>
+            <Text style={{ marginTop: 10}}>ATUALMENTE</Text>
             <Text>Quais fatores você acha que podem contribuir para as dificuldades do seu filho?</Text>
             {dados.fatoresDif.map((item, index)=>{
                 return <TouchableOpacity key={index} onPress={()=>{
                     const newFatoresDif = [...dados.fatoresDif]
                     newFatoresDif[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, fatoresDif: newFatoresDif})}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                     </View>
@@ -141,15 +141,31 @@ export default function SaudeGeral( {setDados} ) {
     )
 }
 
-const styles = StyleSheet.create({
+const styles =  StyleSheet.create({
+    mobileContainer: {
+        marginTop: 10,
+        gap: 10,
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 5,
+        width: '100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     input: {
         borderWidth: 1,
         borderRadius: 8,
         height: 40,
         paddingLeft: 20
     },
-    container: {
-        gap: 10,
-        marginBottom: 10
+    column: {
+        flex: 1,
+        marginHorizontal: 5, 
+        padding: 5,
+        gap: 5
     }
 })

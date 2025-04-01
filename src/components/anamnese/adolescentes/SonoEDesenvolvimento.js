@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Platform } from "react-native";
 
 import Seletor from "../../Seletor";
 
@@ -64,43 +64,55 @@ export default function SonoEDesenvolvimento( {setDados} ) {
         setDadosLocal({ ...dados, comportamentos: comportamentosAtualizados });
     };
 
+    const larguraTela = Dimensions.get('window').width
+    const ehDesktop = larguraTela > 1024 && Platform.OS === 'web'
+
     useEffect(()=>{
         setDados(dados)
     }, [dados])
 
     return (
-        <View style={styles.container}>
+        <View>
             <Text>SONO</Text>
-            <Text>Como é o sono (tranquilo, agitado, acorda durante a noite, chora, insônia, pesadelo...)?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.formaSono}
-                onChangeText={newText=>setDadosLocal({...dados, formaSono: newText})}
-            />
-            <Text>Dorme sozinho?</Text>
-            <Seletor
-                selecionado={dados.dormeSozinhoSelecionado}
-                aoMudar={value=>setDadosLocal({...dados, dormeSozinhoSelecionado: value})}
-                lista={simOuNao}
-            />
-            <Text>Cama compartilhada com:</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.quemCompartilhaCama}
-                onChangeText={newText=>setDadosLocal({...dados, quemCompartilhaCama: newText})}
-            />
-            <Text>Dorme que horas?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.horarioDormir}
-                onChangeText={newText=>setDadosLocal({...dados, horarioDormir: newText})}
-            />
-            <Text>Acorda que horas?</Text>
-            <TextInput
-                style={styles.input}
-                value={dados.horarioAcordar}
-                onChangeText={newText=>setDadosLocal({...dados, horarioAcordar: newText})}
-            />
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Como é o sono (tranquilo, agitado, acorda durante a noite, chora, insônia, pesadelo...)?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.formaSono}
+                        onChangeText={newText=>setDadosLocal({...dados, formaSono: newText})}
+                    />
+                    <Text>Dorme sozinho?</Text>
+                    <Seletor
+                        selecionado={dados.dormeSozinhoSelecionado}
+                        aoMudar={value=>setDadosLocal({...dados, dormeSozinhoSelecionado: value})}
+                        lista={simOuNao}
+                    />
+                </View>
+
+                <View style={ehDesktop?styles.column:null}>
+                    <Text>Cama compartilhada com:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.quemCompartilhaCama}
+                        onChangeText={newText=>setDadosLocal({...dados, quemCompartilhaCama: newText})}
+                    />
+                    <Text>Dorme que horas?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.horarioDormir}
+                        onChangeText={newText=>setDadosLocal({...dados, horarioDormir: newText})}
+                    />
+                    <Text>Acorda que horas?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dados.horarioAcordar}
+                        onChangeText={newText=>setDadosLocal({...dados, horarioAcordar: newText})}
+                    />
+                </View>
+            </View>
+
+
             <Text>DESENVOLVIMENTO</Text>
             <Text>Teve algum problema de crescimento ou desenvolvimento durante os primeiros anos de vida?</Text>
             <Seletor
@@ -115,32 +127,59 @@ export default function SonoEDesenvolvimento( {setDados} ) {
                     newItensSignificantes[index].value = item.value === 'não' ? 'sim' : 'não'
                     setDadosLocal({...dados, itensSignificantes: newItensSignificantes})
                 }}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                         <Text>{item.label}</Text>
                         <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                     </View>
                 </TouchableOpacity>
             ))}
-            <Text style={{fontWeight: 'bold'}}>Indique a idade aproximada em que seu filho apresentou pela primeira vez os comportamentos a seguir:</Text>
-            <Text style={{fontSize: 13}}>Obs.: Assinale 'nunca' se ele nunca demonstrou o comportamento listado. Se não se lembra a idade exata, assinale como cedo, na média ou tarde em relação a outras crianças.</Text>
-            {dados.comportamentos.map(opcao => (
-                <View key={opcao.value}>
-                    <Text>{opcao.label}</Text>
-                    <TextInput
-                    style={styles.input}
-                    value={opcao.idade}
-                    onChangeText={newText=>atualizarComportamento(opcao.value, newText)}
-                    />
+            <Text style={{fontWeight: 'bold', marginTop: 15}}>Indique a idade aproximada em que seu filho apresentou pela primeira vez os comportamentos a seguir:</Text>
+            <Text style={{fontSize: 13, marginTop: 5, marginBottom: 10}}>Obs.: Assinale 'nunca' se ele nunca demonstrou o comportamento listado. Se não se lembra a idade exata, assinale como cedo, na média ou tarde em relação a outras crianças.</Text>
+            
+            <View style={ehDesktop?styles.desktopContainer:styles.mobileContainer}>
+                <View style={ehDesktop?styles.column:null}>
+                    {dados.comportamentos.slice(0, Math.ceil(dados.comportamentos.length/2)).map(opcao => (
+                        <View key={opcao.value}>
+                            <Text>{opcao.label}</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={opcao.idade}
+                                onChangeText={newText=>atualizarComportamento(opcao.value, newText)}
+                            />
+                        </View>
+                    ))}
                 </View>
-            ))}
+                <View style={ehDesktop?styles.column:null}>
+                    {dados.comportamentos.slice(Math.ceil(dados.comportamentos.length/2)).map(opcao => (
+                        <View key={opcao.value}>
+                            <Text>{opcao.label}</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={opcao.idade}
+                                onChangeText={newText=>atualizarComportamento(opcao.value, newText)}
+                            />
+                        </View>
+                    ))}
+                </View>
+            </View>
         </View>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
+const styles =  StyleSheet.create({
+    mobileContainer: {
+        marginTop: 10,
         gap: 10,
-        marginTop: 15
+        margin: 10,
+    },
+    desktopContainer: {
+        marginTop: 10,
+        gap: 5,
+        width: '100%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     input: {
         borderWidth: 1,
@@ -148,23 +187,10 @@ const styles = StyleSheet.create({
         height: 40,
         paddingLeft: 20
     },
-    checkboxContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 10,
-    },
-    checkbox: {
-        width: 24,
-        height: 24,
-        borderWidth: 2,
-        borderRadius: 5,
-        borderColor: "#444",
-        marginRight: 10,
-    },
-    checkboxSelected: {
-        backgroundColor: "#4CAF50",
-    },
-    label: {
-        fontSize: 16,
+    column: {
+        flex: 1,
+        marginHorizontal: 5, 
+        padding: 5,
+        gap: 5
     }
 })

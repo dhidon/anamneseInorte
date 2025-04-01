@@ -71,7 +71,7 @@ export default function SintomasScreen( {route} ) {
                     setDadosLocal({...dadosSintomas, condicoes: newCondicoes});
                 }}>
                      <View>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1}}>
                             <Text>{item.label}</Text>
                             <Text style={{fontWeight: 'bold'}}>{item.value}</Text>
                         </View>
