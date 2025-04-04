@@ -80,7 +80,7 @@ export default function Profissionais( {route} ) {
                                 </thead>
                                 <tbody>
                                     ${
-                                        Object.entries(dadosPaciente).map(
+                                        Object.entries(dadosTotais).map(
                                             ([key, value]) => `
                                             <tr>
                                                 <td>${key}</td>
